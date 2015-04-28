@@ -24,6 +24,7 @@ describe('semlog logger', function() {
         log(' [-] removed log entry');
         log(' [C] changed log entry');
         log(' [TODO] todo log entry');
+        log(' unknown todo log entry');
 
         console.log('-------------------------------------------------------------');
         console.log('');
@@ -104,6 +105,13 @@ describe('semlog utilities', function() {
         expect(semlog.pad(7, 1)).to.equal('7');
         expect(semlog.pad(7, 2)).to.equal('07');
         expect(semlog.pad(7, 3)).to.equal('007');
+    });
+
+    it('pretties numbers', function() {
+        expect(semlog.prettyNumber(1)).to.equal('1');
+        expect(semlog.prettyNumber(100000)).to.equal('100.000');
+
+        expect(semlog.prettyNumber(-100000)).to.equal('-100.000');
     });
 
     it('strip trailing slashes from URLs', function() {

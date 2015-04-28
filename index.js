@@ -82,32 +82,16 @@ exports.log = function(msg, silent) {
  */
 exports.debug = function(obj, silent) {
 
-    var debug = {};
-
-    //global.moboLogObject.push(obj);
-
     if (typeof obj === 'object' && !silent) {
 
         // Print Errors / Stacktraces
         if (obj.stack && obj.name && obj.message) {
             // If the object is an error object, print the stacktrace
             console.log('> '.red + obj.stack.grey + '\n');
-            //global.moboLogObject.push(obj.stack);
             return;
         }
 
-        // Print mobo model objects
-        if (obj.$filepath) {
-
-            debug.$path = obj.$path || null;
-            debug.$filepath = obj.$filepath || null;
-
-            // Print regular JavaScript objects /
-        } else {
-            debug = obj;
-        }
-
-        var msg = JSON.stringify(debug, false, 4);
+        var msg = JSON.stringify(obj, false, 4);
         console.log(msg.grey);
     }
 
@@ -199,11 +183,12 @@ exports.pad = function(number, digits) {
 };
 
 /**
+ * Adds dots as thousand separators to numbers
  *
  * http://stackoverflow.com/a/2901298
  *
  * @param number
- * @returns {XML|string|void}
+ * @returns {string}
  */
 exports.prettyNumber = function(number) {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');

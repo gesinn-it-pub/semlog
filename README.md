@@ -1,7 +1,15 @@
-#  [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
-
+[![npm version](https://img.shields.io/npm/v/semlog.svg?style=flat)](https://www.npmjs.com/package/semlog)
+[![Dependency Status](https://img.shields.io/david/Fannon/semlog.svg?style=flat)](https://david-dm.org/Fannon/semlog)
+[![Build Status](https://img.shields.io/travis/Fannon/semlog.svg?style=flat)](http://travis-ci.org/Fannon/semlog)
+[![Code Climate](https://codeclimate.com/github/Fannon/semlog/badges/gpa.svg)](https://codeclimate.com/github/Fannon/semlog)
+[![Test Coverage](https://codeclimate.com/github/Fannon/semlog/badges/coverage.svg)](https://codeclimate.com/github/Fannon/semlog)
 > A semantic logger module, that colors / formats automatically"
 
+## About
+semlog is a simple logger utiltiy that automatically colors and formats the logging messages and objects, according to their content. 
+It'll use a global object to store the config and the log history, so it can be easily used thoughout a project.
+
+The semlog approach might not be for anyone, it's a lazy mans logging utility :)
 
 ## Install
 
@@ -9,14 +17,52 @@
 $ npm install --save semlog
 ```
 
-
 ## Usage
 
 ```js
 var semlog = require('semlog');
+var log = semlog.log; // Optional shortcut for logging
 
-semlog('Rainbow');
+//////////////////////////////////////////
+// Logging                              //
+//////////////////////////////////////////
+
+// Pretty log an error object
+log(new Error('error log entry'));
+
+// Pretty log an object (no circular object supported, sorry)
+log({title: 'Object log entry', number: 10});
+
+// Log strings
+log('[i] info log entry ');
+log('[W] warning log entry');
+log('[E] error log entry');
+log('[S] success log entry');
+log('[D] debug log entry');
+log('[+] added log entry');
+log('[-] removed log entry');
+log('[C] changed log entry');
+log('[TODO] todo log entry');
+
+//////////////////////////////////////////
+// Logger Functions                     //
+//////////////////////////////////////////
+
+// Returns an array with the latest log messages (depending on the config.
+var logArchive = semlog.getLogHistory();
+
+// Get current logger config
+var config = semlog.getConfig();
+
+
+//////////////////////////////////////////
+// Helper Functions                     //
+//////////////////////////////////////////
+
+
+
 ```
+
 
 
 ## License
