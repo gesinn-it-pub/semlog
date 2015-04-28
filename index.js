@@ -34,9 +34,8 @@ if (!global.githubFannonSemlog) {
 
 
 //////////////////////////////////////////
-// LOGGER FUNCTIONS                     //
+// LOGGING FUNCTIONS                    //
 //////////////////////////////////////////
-
 
 /**
  * Custom Logging function
@@ -72,7 +71,6 @@ exports.log = function(msg, silent) {
         console.log(finalMsg);
     }
 };
-
 
 /**
  * Prints out debugging information for the current model object
@@ -128,6 +126,10 @@ exports.colorMessage = function(msg) {
     return msg;
 };
 
+
+//////////////////////////////////////////
+// LOGGER FUNCTIONS                     //
+//////////////////////////////////////////
 
 /**
  * Gets the current config
