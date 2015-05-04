@@ -15,16 +15,16 @@ describe('semlog logger', function() {
 
         log(new Error('error log entry'));
         log({title: 'Object log entry', number: 10});
-        log(' [i] info log entry ');
-        log(' [W] warning log entry');
-        log(' [E] error log entry');
-        log(' [S] success log entry');
-        log(' [D] debug log entry');
-        log(' [+] added log entry');
-        log(' [-] removed log entry');
-        log(' [C] changed log entry');
-        log(' [TODO] todo log entry');
-        log(' unknown todo log entry');
+        log('[i] info log entry ');
+        log('[W] warning log entry');
+        log('[E] error log entry');
+        log('[S] success log entry');
+        log('[D] debug log entry');
+        log('[+] added log entry');
+        log('[-] removed log entry');
+        log('[C] changed log entry');
+        log('[TODO] todo log entry');
+        log('unknown todo log entry');
 
         console.log('-------------------------------------------------------------');
         console.log('');
@@ -64,7 +64,6 @@ describe('semlog logger', function() {
     });
 
     it('updates the config', function() {
-
 
         var config = semlog.getConfig();
         var newConfig = semlog.updateConfig({date: false});
@@ -110,13 +109,13 @@ describe('semlog utilities', function() {
     it('pretty prints numbers', function() {
         expect(semlog.prettyNumber(1)).to.equal('1');
         expect(semlog.prettyNumber(100000)).to.equal('100.000');
-
         expect(semlog.prettyNumber(-100000)).to.equal('-100.000');
     });
 
     it('pretty prints bytes', function() {
         expect(semlog.prettyBytes(1024)).to.be.a('string');
         expect(semlog.prettyBytes(1024)).to.equal('1.0 KiB');
+        expect(semlog.prettyBytes(1024, true)).to.equal('1.0 kB');
     });
 
     it('strip trailing slashes from URLs', function() {
@@ -130,11 +129,24 @@ describe('semlog utilities', function() {
 
     it('return human readable date-times', function() {
         expect(semlog.humanDate().length).to.equal(19);
+        expect(semlog.humanDate(new Date("October 13, 2014 11:13:00"))).to.equal('2014-10-13 11:13:00');
     });
 
     it('return machine optimized date-times', function() {
         expect(semlog.roboDate().length).to.equal(19);
+        expect(semlog.roboDate(new Date("October 13, 2014 11:13:00"))).to.equal('2014-10-13_11-13-00');
     });
+
+    it('return human readable time', function() {
+        expect(semlog.humanTime().length).to.equal(8);
+        expect(semlog.humanTime(new Date("October 13, 2014 11:13:00"))).to.equal('11:13:00');
+    });
+
+    it('return machine optimized time', function() {
+        expect(semlog.roboTime().length).to.equal(8);
+        expect(semlog.roboTime(new Date("October 13, 2014 11:13:00"))).to.equal('11-13-00');
+    });
+
 
     it('calculates the bytesize of strings', function() {
         expect(semlog.byteSize('internationalization')).to.be.a('number');

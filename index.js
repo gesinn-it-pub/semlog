@@ -27,6 +27,7 @@ if (!global.githubFannonSemlog) {
         config: {
             colorize: true,
             date: true,
+            longdate: false,
             historySize: 2048 // 0 for none
         }
     };
@@ -65,7 +66,12 @@ exports.log = function(msg, silent) {
         var finalMsg = exports.colorMessage(msg);
 
         if (global.githubFannonSemlog.config.date && finalMsg.trim().length > 0) {
-            finalMsg = '['.grey + exports.humanDate().grey + '] '.grey + finalMsg;
+            if (global.githubFannonSemlog.config.longdate) {
+                finalMsg = '['.grey + exports.humanDate().grey + '] '.grey + finalMsg;
+            } else {
+                finalMsg = '['.grey + exports.humanTime().grey + '] '.grey + finalMsg;
+            }
+
         }
 
         console.log(finalMsg);
@@ -287,7 +293,7 @@ exports.getDateArray = function(date) {
  * Returns nicely formatted date-time
  * @example 2015-02-10 16:01:12
  *
- * @param {object} date
+ * @param {object} [date]
  * @returns {string}
  */
 exports.humanDate = function(date) {
@@ -300,10 +306,38 @@ exports.humanDate = function(date) {
  * Returns a formatted date-time, optimized for machines
  * @example 2015-02-10_16-00-08
  *
- * @param {object} date
+ * @param {object} [date]
  * @returns {string}
  */
 exports.roboDate = function(date) {
+    date = date || new Date();
     var d = exports.getDateArray(date);
     return d[0] + '-' + d[1] + '-' + d[2] + '_' + d[3] + '-' + d[4] + '-' + d[5];
 };
+
+/**
+ * Returns nicely formatted date-time
+ * @example 16:01:12
+ *
+ * @param {object} [date]
+ * @returns {string}
+ */
+exports.humanTime = function(date) {
+    date = date || new Date();
+    var d = exports.getDateArray(date);
+    return d[3] + ':' + d[4] + ':' + d[5];
+};
+
+/**
+ * Returns a formatted date-time, optimized for machines
+ * @example 2015-02-10_16-00-08
+ *
+ * @param {object} [date]
+ * @returns {string}
+ */
+exports.roboTime = function(date) {
+    date = date || new Date();
+    var d = exports.getDateArray(date);
+    return d[3] + '-' + d[4] + '-' + d[5];
+};
+
