@@ -107,11 +107,16 @@ describe('semlog utilities', function() {
         expect(semlog.pad(7, 3)).to.equal('007');
     });
 
-    it('pretties numbers', function() {
+    it('pretty prints numbers', function() {
         expect(semlog.prettyNumber(1)).to.equal('1');
         expect(semlog.prettyNumber(100000)).to.equal('100.000');
 
         expect(semlog.prettyNumber(-100000)).to.equal('-100.000');
+    });
+
+    it('pretty prints bytes', function() {
+        expect(semlog.prettyBytes(1024)).to.be.a.string;
+        expect(semlog.prettyBytes(1024)).to.equal('1.0 KiB');
     });
 
     it('strip trailing slashes from URLs', function() {
@@ -130,5 +135,17 @@ describe('semlog utilities', function() {
     it('return machine optimized date-times', function() {
         expect(semlog.roboDate().length).to.equal(19);
     });
+
+    it('calculates the bytesize of strings', function() {
+        expect(semlog.byteSize('internationalization')).to.be.a.number;
+        expect(semlog.byteSize('internationalization')).to.equal(20);
+    });
+
+    it('calculates the bytesize of objects (parsed to JSON)', function() {
+        expect(semlog.byteSize({title: 'internationalization'})).to.be.a.number;
+        expect(semlog.byteSize({title: 'internationalization'})).to.equal(32);
+    });
+
+
 
 });

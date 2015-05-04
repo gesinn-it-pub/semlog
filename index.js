@@ -212,6 +212,58 @@ exports.stripTrailingSlash = function(url) {
 };
 
 /**
+ * Returns the byte length of an utf8 string or an object (when parsed to JSON)
+ *
+ * @see http://stackoverflow.com/a/23329386
+ */
+exports.byteSize = function(obj) {
+
+    var str = '';
+
+    if (typeof obj === 'object') {
+        str = JSON.stringify(obj);
+    } else {
+        str = obj.toString();
+    }
+
+    var s = str.length;
+    for (var i = str.length-1; i >= 0; i--) {
+        var code = str.charCodeAt(i);
+        if (code > 0x7f && code <= 0x7ff) {
+            s++;
+        } else if (code > 0x7ff && code <= 0xffff) {
+            s+=2;
+        }
+        if (code >= 0xDC00 && code <= 0xDFFF) {
+            i--;
+        } //trail surrogate
+    }
+    return s;
+};
+
+/**
+ *
+ * @param bytes
+ * @param [si]
+ * @returns {string}
+ *
+ * @see http://stackoverflow.com/a/14919494
+ */
+exports.prettyBytes = function(bytes, si) {
+    var thresh = si ? 1000 : 1024;
+    if (bytes < thresh) {
+        return bytes + ' B';
+    }
+    var units = si ? ['kB','MB','GB','TB','PB','EB','ZB','YB'] : ['KiB','MiB','GiB','TiB','PiB','EiB','ZiB','YiB'];
+    var u = -1;
+    do {
+        bytes /= thresh;
+        ++u;
+    } while(bytes >= thresh);
+    return bytes.toFixed(1)+' '+units[u];
+};
+
+/**
  * Returns an array with date / time information
  * Starts with year at index 0 up to index 6 for milliseconds
  *
