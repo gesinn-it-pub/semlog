@@ -53,8 +53,13 @@ exports.log = function(msg, silent) {
         global.githubFannonSemlog.history.length >= global.githubFannonSemlog.config.historySize) {
         global.githubFannonSemlog.history.shift();
     }
+
     // Append message (unformatted and uncolored) to log history
-    global.githubFannonSemlog.history.push(JSON.parse(JSON.stringify(msg)));
+    global.githubFannonSemlog.history.push({
+        time: (new Date).getTime(),
+        date: exports.humanDate(),
+        msg: JSON.parse(JSON.stringify(msg))
+    });
 
     // If msg is an object, use the debug function instead
     if (msg !== null && typeof msg === 'object') {
