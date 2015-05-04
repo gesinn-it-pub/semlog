@@ -115,7 +115,7 @@ describe('semlog utilities', function() {
     });
 
     it('pretty prints bytes', function() {
-        expect(semlog.prettyBytes(1024)).to.be.a.string;
+        expect(semlog.prettyBytes(1024)).to.be.a('string');
         expect(semlog.prettyBytes(1024)).to.equal('1.0 KiB');
     });
 
@@ -137,12 +137,12 @@ describe('semlog utilities', function() {
     });
 
     it('calculates the bytesize of strings', function() {
-        expect(semlog.byteSize('internationalization')).to.be.a.number;
+        expect(semlog.byteSize('internationalization')).to.be.a('number');
         expect(semlog.byteSize('internationalization')).to.equal(20);
     });
 
     it('calculates the bytesize of objects (parsed to JSON)', function() {
-        expect(semlog.byteSize({title: 'internationalization'})).to.be.a.number;
+        expect(semlog.byteSize({title: 'internationalization'})).to.be.a('number');
         expect(semlog.byteSize({title: 'internationalization'})).to.equal(32);
     });
 
