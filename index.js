@@ -15,6 +15,7 @@
 //////////////////////////////////////////
 
 var colors = require('colors'); // sic
+var events = require('events');
 
 
 //////////////////////////////////////////
@@ -24,6 +25,7 @@ var colors = require('colors'); // sic
 if (!global.githubFannonSemlog) {
     global.githubFannonSemlog = {
         history: [],
+        events: new events.EventEmitter(),
         config: {
             colorize: true,
             date: true,
@@ -32,6 +34,8 @@ if (!global.githubFannonSemlog) {
         }
     };
 }
+
+var sl = global.githubFannonSemlog;
 
 
 //////////////////////////////////////////
@@ -60,6 +64,7 @@ exports.log = function(msg, silent) {
         date: exports.humanDate(),
         msg: JSON.parse(JSON.stringify(msg))
     });
+    global.githubFannonSemlog.events.emit('log', msg);
 
     // If msg is an object, use the debug function instead
     if (msg !== null && typeof msg === 'object') {
@@ -105,6 +110,12 @@ exports.debug = function(obj, silent) {
     }
 
 };
+
+/**
+ * semlog events
+ * Currently only 'log'
+ */
+exports.events = global.githubFannonSemlog.events;
 
 /**
  * Colors the messages by searching for specific indicator strings
