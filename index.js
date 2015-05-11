@@ -28,6 +28,7 @@ if (!global.githubFannonSemlog) {
         events: new events.EventEmitter(),
         config: {
             colorize: true,
+            logDate: false,
             date: true,
             longdate: false,
             historySize: 2048 // 0 for none
@@ -52,6 +53,9 @@ var sl = global.githubFannonSemlog;
  */
 exports.log = function(msg, silent) {
 
+    var config = global.githubFannonSemlog.config;
+    var history = global.githubFannonSemlog.history;
+
     // Check that the message history size doesn't get to big
     if (global.githubFannonSemlog.config.historySize &&
         global.githubFannonSemlog.history.length >= global.githubFannonSemlog.config.historySize) {
@@ -59,11 +63,14 @@ exports.log = function(msg, silent) {
     }
 
     // Append message (unformatted and uncolored) to log history
-    global.githubFannonSemlog.history.push({
-        time: (new Date).getTime(),
-        date: exports.humanDate(),
-        msg: JSON.parse(JSON.stringify(msg))
-    });
+    msg = JSON.parse(JSON.stringify(msg)); // Deep Copy, to avoid circular dependencies
+    if (config.logDate) {
+        history.push([msg, exports.humanDate(), (new Date()).getTime()]);
+    } else {
+        history.push(msg);
+    }
+
+
     global.githubFannonSemlog.events.emit('log', msg);
 
     // If msg is an object, use the debug function instead

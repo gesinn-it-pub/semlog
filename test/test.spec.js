@@ -76,7 +76,7 @@ describe('semlog logger', function() {
     it('keeps the log object at a specific size', function() {
 
         var historySize = 7;
-        var newConfig = semlog.updateConfig({historySize: historySize});
+        var newConfig = semlog.updateConfig({historySize: historySize, logDate: true});
 
         for (var i = 0; i < 32; i++) {
             log('[i] Index added: ' + i, true);
