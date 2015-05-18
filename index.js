@@ -14,7 +14,7 @@
 // Requirements                         //
 //////////////////////////////////////////
 
-var colors = require('colors'); // sic
+var chalk = require('chalk');
 var events = require('events');
 
 
@@ -84,9 +84,9 @@ exports.log = function(msg, silent) {
 
         if (global.githubFannonSemlog.config.date && finalMsg.trim().length > 0) {
             if (global.githubFannonSemlog.config.longdate) {
-                finalMsg = '['.grey + exports.humanDate().grey + '] '.grey + finalMsg;
+                finalMsg = chalk.gray('[' + exports.humanDate() + '] ') + finalMsg;
             } else {
-                finalMsg = '['.grey + exports.humanTime().grey + '] '.grey + finalMsg;
+                finalMsg = chalk.gray('[' + exports.humanTime() + '] ') + finalMsg;
             }
 
         }
@@ -108,12 +108,12 @@ exports.debug = function(obj, silent) {
         // Print Errors / Stacktraces
         if (obj.stack && obj.name && obj.message) {
             // If the object is an error object, print the stacktrace
-            console.log('> '.red + obj.stack.grey + '\n');
+            console.log(chalk.red('> ') + chalk.gray(obj.stack) + '\n');
             return;
         }
 
         var msg = JSON.stringify(obj, false, 4);
-        console.log(msg.grey);
+        console.log(chalk.gray(msg));
     }
 
 };
@@ -148,7 +148,7 @@ exports.colorMessage = function(msg) {
     for (var searchString in colorMap) {
         var color = colorMap[searchString];
         if (msg.indexOf('[' + searchString + ']') > -1) {
-            return msg[color];
+            return chalk[color](msg);
         }
     }
 
