@@ -28,15 +28,13 @@ if (!global.githubFannonSemlog) {
         events: new events.EventEmitter(),
         config: {
             colorize: true,
-            logDate: false,
-            date: true,
-            longdate: false,
+            logDateTime: true,
+            printTime: true,
+            printDateTime: false,
             historySize: 2048 // 0 for none
         }
     };
 }
-
-var sl = global.githubFannonSemlog;
 
 
 //////////////////////////////////////////
@@ -53,48 +51,69 @@ var sl = global.githubFannonSemlog;
  */
 exports.log = function(obj, silent) {
 
+    // Expose Log Event
+    global.githubFannonSemlog.events.emit('log', obj);
+
     if (obj === null || obj === undefined) {
         return;
     }
 
     var config = global.githubFannonSemlog.config;
     var history = global.githubFannonSemlog.history;
-
-    // Check that the message history size doesn't get to big
-    if (config.historySize && history.length >= config.historySize) {
-        history.shift();
-    }
+    var msg = false;
 
     // Append message (unformatted and uncolored) to log history
-    var msg = JSON.parse(JSON.stringify(obj)); // Deep Copy, to avoid circular dependencies
-    if (config.logDate) {
-        history.push([msg, exports.humanDate(), (new Date()).getTime()]);
-    } else {
-        history.push(msg);
+    try {
+        msg = JSON.parse(JSON.stringify(obj)); // Deep Copy, to avoid circular dependencies
+    } catch (e) {
+        exports.log('[W] Internal semlog error: Could not push circular/invalid object into the history', true);
     }
-
-    global.githubFannonSemlog.events.emit('log', msg);
 
     if (!silent) {
 
-        // If msg is an object, use the debug function instead
+        // If obj is an object, use the debug function instead
         if (obj !== null && typeof obj === 'object') {
+
             exports.debug(obj, silent);
 
-        } else {
-            var finalMsg = exports.colorMessage(msg);
+        // If the obj is a finite string (parsable to JSON), colorize and print it to the console
+        } else if (msg) {
 
-            if (global.githubFannonSemlog.config.date && finalMsg.trim().length > 0) {
-                if (global.githubFannonSemlog.config.longdate) {
-                    finalMsg = chalk.gray('[' + exports.humanDate() + '] ') + finalMsg;
+            var coloredMsg = exports.colorMessage(msg);
+
+            if ((config.printTime || config.printDateTime) && coloredMsg.trim().length > 0) {
+                if (config.printDateTime) {
+                    coloredMsg = chalk.gray('[' + exports.humanDate() + '] ') + coloredMsg;
                 } else {
-                    finalMsg = chalk.gray('[' + exports.humanTime() + '] ') + finalMsg;
+                    coloredMsg = chalk.gray('[' + exports.humanTime() + '] ') + coloredMsg;
                 }
             }
 
-            console.log(finalMsg);
+            console.log(coloredMsg);
+
+        // If obj has a circular structure or contains code, fall back to console.dir()
+        } else {
+            // If the obj could not be converted to a finite string, print it with console.dir
+            console.dir(obj);
         }
     }
+
+    // Push it into the log history
+    if (msg) {
+
+        // Check that the message history size doesn't get to big
+        if (config.historySize && history.length >= config.historySize) {
+            history.shift();
+        }
+
+        // Prepend the logdate to the
+        if (config.logDate) {
+            msg = '[' + exports.humanDate() + '] ' + msg;
+        }
+
+        history.push(msg);
+    }
+
 
 };
 
@@ -111,8 +130,13 @@ exports.debug = function(obj, silent) {
         // Print Errors / Stacktraces
         if (obj instanceof Error) {
             // If the object is an error object, print the stacktrace
-            console.log(chalk.red('> ' + obj.toString()) + ' -- ' + obj.name) ;
-            console.log(chalk.gray(obj.stack));
+            console.log(chalk.red('> ' + obj.toString())) ;
+            if (obj.stack) {
+                console.error(chalk.gray(obj.stack));
+            } else {
+                console.error(obj);
+            }
+
             return;
         }
 

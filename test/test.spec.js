@@ -24,6 +24,8 @@ describe('semlog logger', function() {
         log('[TODO] todo log entry');
         log('unknown todo log entry');
 
+        console.dir(semlog.getLogHistory());
+
         console.log('');
         console.log('-------------------------------------------------------------');
         console.log(' Testing Log Objects and Errors');
@@ -47,11 +49,10 @@ describe('semlog logger', function() {
     });
 
     it('handles various invalid log objects', function() {
-
-
         log(undefined);
         log(null);
-
+        log(Error);
+        log(Infinity);
     });
 
     it('returns the log history as an array', function() {
@@ -90,17 +91,17 @@ describe('semlog logger', function() {
     it('updates the config', function() {
 
         var config = semlog.getConfig();
-        var newConfig = semlog.updateConfig({date: false});
+        var newConfig = semlog.updateConfig({printTime: false});
 
         expect(newConfig).to.be.instanceof(Object);
-        expect(newConfig.date).to.equal(false);
+        expect(newConfig.printTime).to.equal(false);
         expect(newConfig.historySize).to.equal(config.historySize);
     });
 
     it('keeps the log object at a specific size', function() {
 
         var historySize = 7;
-        var newConfig = semlog.updateConfig({historySize: historySize, logDate: true});
+        var newConfig = semlog.updateConfig({historySize: historySize, logDateTime: true});
 
         for (var i = 0; i < 32; i++) {
             log('[i] Index added: ' + i, true);
