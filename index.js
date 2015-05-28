@@ -51,48 +51,51 @@ var sl = global.githubFannonSemlog;
  * @param {string|object}   msg     Message String or Object
  * @param {boolean}         [silent]  Dot not print message to the console, but stores it to the log history.
  */
-exports.log = function(msg, silent) {
+exports.log = function(obj, silent) {
+
+    if (obj === null || obj === undefined) {
+        return;
+    }
 
     var config = global.githubFannonSemlog.config;
     var history = global.githubFannonSemlog.history;
 
     // Check that the message history size doesn't get to big
-    if (global.githubFannonSemlog.config.historySize &&
-        global.githubFannonSemlog.history.length >= global.githubFannonSemlog.config.historySize) {
-        global.githubFannonSemlog.history.shift();
+    if (config.historySize && history.length >= config.historySize) {
+        history.shift();
     }
 
     // Append message (unformatted and uncolored) to log history
-    msg = JSON.parse(JSON.stringify(msg)); // Deep Copy, to avoid circular dependencies
+    var msg = JSON.parse(JSON.stringify(obj)); // Deep Copy, to avoid circular dependencies
     if (config.logDate) {
         history.push([msg, exports.humanDate(), (new Date()).getTime()]);
     } else {
         history.push(msg);
     }
 
-
     global.githubFannonSemlog.events.emit('log', msg);
 
-    // If msg is an object, use the debug function instead
-    if (msg !== null && typeof msg === 'object') {
-        exports.debug(msg, silent);
-        return;
-    }
+    if (!silent) {
 
-    if (msg && !silent) {
-        var finalMsg = exports.colorMessage(msg);
+        // If msg is an object, use the debug function instead
+        if (obj !== null && typeof obj === 'object') {
+            exports.debug(obj, silent);
 
-        if (global.githubFannonSemlog.config.date && finalMsg.trim().length > 0) {
-            if (global.githubFannonSemlog.config.longdate) {
-                finalMsg = chalk.gray('[' + exports.humanDate() + '] ') + finalMsg;
-            } else {
-                finalMsg = chalk.gray('[' + exports.humanTime() + '] ') + finalMsg;
+        } else {
+            var finalMsg = exports.colorMessage(msg);
+
+            if (global.githubFannonSemlog.config.date && finalMsg.trim().length > 0) {
+                if (global.githubFannonSemlog.config.longdate) {
+                    finalMsg = chalk.gray('[' + exports.humanDate() + '] ') + finalMsg;
+                } else {
+                    finalMsg = chalk.gray('[' + exports.humanTime() + '] ') + finalMsg;
+                }
             }
 
+            console.log(finalMsg);
         }
-
-        console.log(finalMsg);
     }
+
 };
 
 /**
@@ -106,9 +109,10 @@ exports.debug = function(obj, silent) {
     if (typeof obj === 'object' && !silent) {
 
         // Print Errors / Stacktraces
-        if (obj.stack && obj.name && obj.message) {
+        if (obj instanceof Error) {
             // If the object is an error object, print the stacktrace
-            console.log(chalk.red('> ') + chalk.gray(obj.stack) + '\n');
+            console.log(chalk.red('> ' + obj.toString()) + ' -- ' + obj.name) ;
+            console.log(chalk.gray(obj.stack));
             return;
         }
 

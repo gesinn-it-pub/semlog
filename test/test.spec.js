@@ -10,11 +10,9 @@ describe('semlog logger', function() {
 
         console.log('');
         console.log('-------------------------------------------------------------');
-        console.log(' Starting log message test');
+        console.log(' Testing Log Messages');
         console.log('-------------------------------------------------------------');
 
-        log(new Error('error log entry'));
-        log({title: 'Object log entry', number: 10});
         log('[i] info log entry ');
         log('[W] warning log entry');
         log('[E] error log entry');
@@ -26,8 +24,34 @@ describe('semlog logger', function() {
         log('[TODO] todo log entry');
         log('unknown todo log entry');
 
+        console.log('');
+        console.log('-------------------------------------------------------------');
+        console.log(' Testing Log Objects and Errors');
+        console.log('-------------------------------------------------------------');
+
+        // Create a new object, that prototypally inherits from the Error constructor.
+        function MyError(message) {
+            this.name = 'MyError';
+            this.message = message || 'Default Message';
+        }
+        MyError.prototype = Object.create(Error.prototype);
+        MyError.prototype.constructor = MyError;
+
+        log({title: 'Object log entry', number: 10});
+        log(new Error('error log entry'));
+        log(new TypeError('error log entry'));
+        log(new MyError('error log entry'));
+
         console.log('-------------------------------------------------------------');
         console.log('');
+    });
+
+    it('handles various invalid log objects', function() {
+
+
+        log(undefined);
+        log(null);
+
     });
 
     it('returns the log history as an array', function() {
