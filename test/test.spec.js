@@ -154,24 +154,23 @@ describe('semlog utilities', function() {
 
     it('return human readable date-times', function() {
         expect(semlog.humanDate().length).to.equal(19);
-        expect(semlog.humanDate(new Date("October 13, 2014 11:13:00"))).to.equal('2014-10-13 11:13:00');
+        expect(semlog.humanDate(new Date('October 13, 2014 11:13:00'))).to.equal('2014-10-13 11:13:00');
     });
 
     it('return machine optimized date-times', function() {
         expect(semlog.roboDate().length).to.equal(19);
-        expect(semlog.roboDate(new Date("October 13, 2014 11:13:00"))).to.equal('2014-10-13_11-13-00');
+        expect(semlog.roboDate(new Date('October 13, 2014 11:13:00'))).to.equal('2014-10-13_11-13-00');
     });
 
     it('return human readable time', function() {
         expect(semlog.humanTime().length).to.equal(8);
-        expect(semlog.humanTime(new Date("October 13, 2014 11:13:00"))).to.equal('11:13:00');
+        expect(semlog.humanTime(new Date('October 13, 2014 11:13:00'))).to.equal('11:13:00');
     });
 
     it('return machine optimized time', function() {
         expect(semlog.roboTime().length).to.equal(8);
-        expect(semlog.roboTime(new Date("October 13, 2014 11:13:00"))).to.equal('11-13-00');
+        expect(semlog.roboTime(new Date('October 13, 2014 11:13:00'))).to.equal('11-13-00');
     });
-
 
     it('calculates the bytesize of strings', function() {
         expect(semlog.byteSize('internationalization')).to.be.a('number');
@@ -182,7 +181,6 @@ describe('semlog utilities', function() {
         expect(semlog.byteSize({title: 'internationalization'})).to.be.a('number');
         expect(semlog.byteSize({title: 'internationalization'})).to.equal(32);
     });
-
 
 
 });

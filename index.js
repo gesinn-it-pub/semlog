@@ -36,6 +36,8 @@ if (!global.githubFannonSemlog) {
     };
 }
 
+/** Publicly export the chalk color library */
+exports.chalk = chalk;
 
 //////////////////////////////////////////
 // LOGGING FUNCTIONS                    //
