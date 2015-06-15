@@ -144,8 +144,14 @@ exports.debug = function(obj, silent) {
         }
 
         if (global.githubFannonSemlog.config.printYaml) {
+
             // Print YAML
-            var options = {};
+            var options = {
+                keysColor: 'white',
+                dashColor: 'white',
+                stringColor: 'yellow',
+                numberColor: 'blue'
+            };
 
             if (!global.githubFannonSemlog.config.colorize) {
                 options.noColor = true;
