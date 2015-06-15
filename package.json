@@ -1,6 +1,6 @@
 {
   "name": "semlog",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "A semantic logger module, that colors and formats automatically depending on the content",
   "homepage": "https://github.com/Fannon/semlog",
   "author": {
@@ -19,7 +19,8 @@
     "colors"
   ],
   "dependencies": {
-    "chalk": "^1.0.0"
+    "chalk": "^1.0.0",
+    "prettyjson": "^1.1.2"
   },
   "devDependencies": {
     "chai": "^2.3.0",

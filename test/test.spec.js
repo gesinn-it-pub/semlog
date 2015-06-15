@@ -48,6 +48,20 @@ describe('semlog logger', function() {
         console.log('');
     });
 
+    it('prints objects as colorized YAML', function() {
+        semlog.updateConfig({printYaml: true});
+        log({
+            text: 'text',
+            number: 42,
+            array: [1, '2'],
+            object: {
+                key: 'value'
+            }
+
+        });
+        semlog.updateConfig({printYaml: false});
+    });
+
     it('handles various invalid log objects', function() {
         log(undefined);
         log(null);

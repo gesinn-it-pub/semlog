@@ -16,7 +16,7 @@
 
 var chalk = require('chalk');
 var events = require('events');
-
+var prettyjson = require('prettyjson');
 
 //////////////////////////////////////////
 // Variables                            //
@@ -28,6 +28,7 @@ if (!global.githubFannonSemlog) {
         events: new events.EventEmitter(),
         config: {
             colorize: true,
+            printYaml: false,
             logDateTime: true,
             printTime: true,
             printDateTime: false,
@@ -142,8 +143,21 @@ exports.debug = function(obj, silent) {
             return;
         }
 
-        var msg = JSON.stringify(obj, false, 4);
-        console.log(chalk.gray(msg));
+        if (global.githubFannonSemlog.config.printYaml) {
+            // Print YAML
+            var options = {};
+
+            if (!global.githubFannonSemlog.config.colorize) {
+                options.noColor = true;
+            }
+            console.log(chalk.gray('---\n') + prettyjson.render(obj, options));
+
+        } else {
+            // Print indented JSON
+            var msg = JSON.stringify(obj, false, 4);
+            console.log(chalk.gray(msg));
+        }
+
     }
 
 };
