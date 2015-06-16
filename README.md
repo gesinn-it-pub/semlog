@@ -66,7 +66,8 @@ semlog.updateConfig({
 ### Helper Functions and more examples
 semlog has some built in helper functions like returning nicely formatted dates.
 
-For a complete API Doc, please view the API docs at [/doc/](https://github.com/Fannon/semlog/blob/master/doc/).
+For a complete API Doc, please view the [API docs](https://cdn.rawgit.com/Fannon/semlog/master/doc/).
+
 More example can be found in the [unit test](https://github.com/Fannon/semlog/blob/master/test/test.spec.js) file.
 
 ## License
