@@ -57,7 +57,6 @@ describe('semlog logger', function() {
             object: {
                 key: 'value'
             }
-
         });
         semlog.updateConfig({printYaml: false});
     });

@@ -54,15 +54,28 @@ var logArchive = semlog.getLogHistory();
 // Get current logger config
 var config = semlog.getConfig();
 
+// Change default options:
+// This will only update the option that are actually given
+semlog.updateConfig({
+    colorize: true,
+    printYaml: false,
+    logDateTime: true,
+    printTime: true,
+    printDateTime: false,
+    historySize: 2048 // 0 for none
+});
+
+
 
 //////////////////////////////////////////
 // Helper Functions                     //
 //////////////////////////////////////////
 
 
-
 ```
 
+## More Examples
+More example can be found in the [https://github.com/Fannon/semlog/blob/master/test/test.spec.js unit test] file.
 
 
 ## License
