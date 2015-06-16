@@ -3,7 +3,7 @@
 [![Build Status](https://img.shields.io/travis/Fannon/semlog.svg?style=flat)](http://travis-ci.org/Fannon/semlog)
 [![Code Climate](https://codeclimate.com/github/Fannon/semlog/badges/gpa.svg)](https://codeclimate.com/github/Fannon/semlog)
 [![Test Coverage](https://codeclimate.com/github/Fannon/semlog/badges/coverage.svg)](https://codeclimate.com/github/Fannon/semlog)
-> A semantic logger module, that colors / formats automatically"
+> A semantic logger module, that colors / formats automatically
 
 ## About
 semlog is a simple logger utiltiy that automatically colors and formats the logging messages and objects, according to their content. 
@@ -12,21 +12,19 @@ It'll use a global object to store the config and the log history, so it can be 
 The semlog approach might not be for anyone, it's a lazy mans logging utility :)
 
 ## Install
-
 ```sh
 $ npm install --save semlog
 ```
 
 ## Usage
-
-```js
+### Import 
+```javascript
 var semlog = require('semlog');
 var log = semlog.log; // Optional shortcut for logging
+```
 
-//////////////////////////////////////////
-// Logging                              //
-//////////////////////////////////////////
-
+### Logging
+```javascript
 // Pretty log an error object
 log(new Error('error log entry'));
 
@@ -43,11 +41,10 @@ log('[+] added log entry');
 log('[-] removed log entry');
 log('[C] changed log entry');
 log('[TODO] todo log entry');
+```
 
-//////////////////////////////////////////
-// Logger Functions                     //
-//////////////////////////////////////////
-
+### Logger functions
+```javascript
 // Returns an array with the latest log messages (depending on the config.
 var logArchive = semlog.getLogHistory();
 
@@ -64,24 +61,16 @@ semlog.updateConfig({
     printDateTime: false,
     historySize: 2048 // 0 for none
 });
-
-
-
-//////////////////////////////////////////
-// Helper Functions                     //
-//////////////////////////////////////////
-
-
 ```
 
-## More Examples
-More example can be found in the [https://github.com/Fannon/semlog/blob/master/test/test.spec.js unit test] file.
+### Helper Functions and more examples
+semlog has some built in helper functions like returning nicely formatted dates.
 
+For a complete API Doc, please view the API docs at [/doc/](https://github.com/Fannon/semlog/blob/master/doc/).
+More example can be found in the [unit test](https://github.com/Fannon/semlog/blob/master/test/test.spec.js) file.
 
 ## License
-
 MIT © [Simon Heimler](http://www.fannon.de)
-
 
 [npm-image]: https://badge.fury.io/js/semlog.svg
 [npm-url]: https://npmjs.org/package/semlog

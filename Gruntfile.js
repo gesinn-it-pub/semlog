@@ -67,6 +67,14 @@ module.exports = function(grunt) {
                 files: '<%= jshint.test.src %>',
                 tasks: ['lint', 'test']
             }
+        },
+        jsdoc: {
+            dist: {
+                src: ['index.js'],
+                options: {
+                    destination: 'doc'
+                }
+            }
         }
     });
 
@@ -74,7 +82,7 @@ module.exports = function(grunt) {
     grunt.registerTask('lint', ['jshint', 'jscs']);
     grunt.registerTask('test', ['mochacli']);
     grunt.registerTask('coverage', ['mocha_istanbul:coverage']);
-    grunt.registerTask('default', ['lint', 'coverage']);
+    grunt.registerTask('default', ['lint', 'coverage', 'jsdoc']);
 
     grunt.event.on('coverage', function(content, done) {
         done();
