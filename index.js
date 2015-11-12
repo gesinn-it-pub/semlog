@@ -176,6 +176,7 @@ exports.events = global.githubFannonSemlog.events;
 
 /**
  * Colors the messages by searching for specific indicator strings
+ * TODO: Allow to add to the colorMap
  *
  * @param {string} msg
  * @returns {string}
@@ -183,21 +184,21 @@ exports.events = global.githubFannonSemlog.events;
 exports.colorMessage = function(msg) {
 
     var colorMap = {
-        'E': 'red',         // ERROR
-        'W': 'yellow',      // WARNING
-        'S': 'green',       // SUCCESS
-        'i': 'blue',        // INFO
-        '+': 'green',       // ADDED
-        '-': 'red',         // REMOVED
-        'C': 'cyan',        // CHANGED
-        'U': 'grey',        // UNCHANGED
-        'D': 'magenta',     // DEBUG
-        'TODO': 'magenta'   // TO-DO
+        '[E]': 'red',         // ERROR
+        '[W]': 'yellow',      // WARNING
+        '[S]': 'green',       // SUCCESS
+        '[i]': 'blue',        // INFO
+        '[+]': 'green',       // ADDED
+        '[-]': 'red',         // REMOVED
+        '[C]': 'cyan',        // CHANGED
+        '[U]': 'grey',        // UNCHANGED
+        '[D]': 'magenta',     // DEBUG
+        '[TODO]': 'magenta'  // TO-DO
     };
 
     for (var searchString in colorMap) {
         var color = colorMap[searchString];
-        if (msg.indexOf('[' + searchString + ']') > -1) {
+        if (msg.indexOf(searchString) > -1) {
             return chalk[color](msg);
         }
     }
