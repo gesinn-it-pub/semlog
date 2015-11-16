@@ -286,6 +286,7 @@ exports.prettyNumber = function(number) {
  * @returns {String}
  */
 exports.cleanUrl = function(url) {
+    url = url.trim();
     return url.replace(/^\/|\/$/g, '');
 };
 

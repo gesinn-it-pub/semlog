@@ -1,5 +1,7 @@
 'use strict';
 
+/*global describe, it*/
+
 var semlog = require('../');
 var log = semlog.log;
 var expect = require('chai').expect;
@@ -175,7 +177,10 @@ describe('semlog utilities', function() {
 
     it('strips leading and ending slashes from URLs / URL paths', function() {
         expect(semlog.cleanUrl('http://fannon.de/')).to.equal('http://fannon.de');
+        expect(semlog.cleanUrl('http://fannon.de  ')).to.equal('http://fannon.de');
         expect(semlog.cleanUrl('/test/')).to.equal('test');
+        expect(semlog.cleanUrl('/test/ ')).to.equal('test');
+        expect(semlog.cleanUrl('   test/ ')).to.equal('test');
     });
 
     it('creates date arrays', function() {
