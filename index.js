@@ -277,6 +277,20 @@ exports.prettyNumber = function(number) {
 };
 
 /**
+ * Replace all (/.../g) leading slash (^\/) or (|) trailing slash (\/$) with an empty string.
+ *
+ * @see http://stackoverflow.com/a/3840645
+ *
+ * @param {String} url URL / Path to cleanup
+
+ * @returns {String}
+ */
+exports.cleanUrl = function(url) {
+    return url.replace(/^\/|\/$/g, '');
+};
+
+
+/**
  * Strips trailing slashes from URL
  *
  * @see http://stackoverflow.com/a/6680858/776425

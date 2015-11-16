@@ -169,8 +169,13 @@ describe('semlog utilities', function() {
         expect(semlog.prettyBytes(1024, true)).to.equal('1.0 kB');
     });
 
-    it('strip trailing slashes from URLs', function() {
+    it('strips trailing slashes from URLs', function() {
         expect(semlog.stripTrailingSlash('http://fannon.de/')).to.equal('http://fannon.de');
+    });
+
+    it('strips leading and ending slashes from URLs / URL paths', function() {
+        expect(semlog.cleanUrl('http://fannon.de/')).to.equal('http://fannon.de');
+        expect(semlog.cleanUrl('/test/')).to.equal('test');
     });
 
     it('creates date arrays', function() {
