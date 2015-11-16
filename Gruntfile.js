@@ -75,6 +75,11 @@ module.exports = function(grunt) {
                     destination: 'doc'
                 }
             }
+        },
+        release: {
+            options: {
+
+            }
         }
     });
 

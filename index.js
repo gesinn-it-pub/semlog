@@ -84,7 +84,7 @@ exports.log = function(obj, silent) {
 
             var coloredMsg = exports.colorMessage(msg);
 
-            if ((config.printTime || config.printDateTime) && coloredMsg.trim().length > 0) {
+            if ((config.printTime || config.printDateTime) && coloredMsg.trim && coloredMsg.trim().length > 0) {
                 if (config.printDateTime) {
                     coloredMsg = chalk.gray('[' + exports.humanDate() + '] ') + coloredMsg;
                 } else {
@@ -198,7 +198,7 @@ exports.colorMessage = function(msg) {
 
     for (var searchString in colorMap) {
         var color = colorMap[searchString];
-        if (msg.indexOf(searchString) > -1) {
+        if (msg.indexOf && msg.indexOf(searchString) > -1) {
             return chalk[color](msg);
         }
     }

@@ -28,6 +28,19 @@ describe('semlog logger', function() {
 
         console.log('');
         console.log('-------------------------------------------------------------');
+        console.log(' Testing Numbers and Datatypes');
+        console.log('-------------------------------------------------------------');
+
+        log(3);
+        log([1, 2, 3]);
+        log(true);
+        log(false);
+        log(null);
+        log(Infinity);
+
+
+        console.log('');
+        console.log('-------------------------------------------------------------');
         console.log(' Testing Log Objects and Errors');
         console.log('-------------------------------------------------------------');
 
