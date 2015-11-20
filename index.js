@@ -85,7 +85,7 @@ exports.log = function(obj, silent) {
 
             var coloredMsg = exports.colorMessage(msg);
 
-            if ((config.printTime || config.printDateTime) && coloredMsg.trim().length > 0) {
+            if ((config.printTime || config.printDateTime) && coloredMsg.trim && coloredMsg.trim().length > 0) {
                 if (config.printDateTime) {
                     coloredMsg = chalk.gray('[' + exports.humanDate() + '] ') + coloredMsg;
                 } else {
@@ -181,6 +181,7 @@ exports.events = global.githubFannonSemlog.events;
 
 /**
  * Colors the messages by searching for specific indicator strings
+ * TODO: Allow to add to the colorMap
  *
  * @param {string} msg
  * @returns {string}
@@ -188,21 +189,21 @@ exports.events = global.githubFannonSemlog.events;
 exports.colorMessage = function(msg) {
 
     var colorMap = {
-        'E': 'red',         // ERROR
-        'W': 'yellow',      // WARNING
-        'S': 'green',       // SUCCESS
-        'i': 'blue',        // INFO
-        '+': 'green',       // ADDED
-        '-': 'red',         // REMOVED
-        'C': 'cyan',        // CHANGED
-        'U': 'grey',        // UNCHANGED
-        'D': 'magenta',     // DEBUG
-        'TODO': 'magenta'   // TO-DO
+        '[E]': 'red',         // ERROR
+        '[W]': 'yellow',      // WARNING
+        '[S]': 'green',       // SUCCESS
+        '[i]': 'blue',        // INFO
+        '[+]': 'green',       // ADDED
+        '[-]': 'red',         // REMOVED
+        '[C]': 'cyan',        // CHANGED
+        '[U]': 'grey',        // UNCHANGED
+        '[D]': 'magenta',     // DEBUG
+        '[TODO]': 'magenta'  // TO-DO
     };
 
     for (var searchString in colorMap) {
         var color = colorMap[searchString];
-        if (msg.indexOf('[' + searchString + ']') > -1) {
+        if (msg.indexOf && msg.indexOf(searchString) > -1) {
             return chalk[color](msg);
         }
     }
@@ -279,6 +280,21 @@ exports.pad = function(number, digits) {
 exports.prettyNumber = function(number) {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 };
+
+/**
+ * Replace all (/.../g) leading slash (^\/) or (|) trailing slash (\/$) with an empty string.
+ *
+ * @see http://stackoverflow.com/a/3840645
+ *
+ * @param {String} url URL / Path to cleanup
+
+ * @returns {String}
+ */
+exports.cleanUrl = function(url) {
+    url = url.trim();
+    return url.replace(/^\/|\/$/g, '');
+};
+
 
 /**
  * Strips trailing slashes from URL

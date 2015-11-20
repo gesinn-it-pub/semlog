@@ -8,13 +8,9 @@ module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt);
 
     grunt.initConfig({
-        jshint: {
+        eslint: {
             options: {
-                jshintrc: '.jshintrc',
-                reporter: require('jshint-stylish')
-            },
-            gruntfile: {
-                src: ['Gruntfile.js']
+                configFile: '.eslintrc'
             },
             js: {
                 src: ['*.js']
@@ -75,11 +71,16 @@ module.exports = function(grunt) {
                     destination: 'doc'
                 }
             }
+        },
+        release: {
+            options: {
+
+            }
         }
     });
 
     // Default task.
-    grunt.registerTask('lint', ['jshint', 'jscs']);
+    grunt.registerTask('lint', ['eslint', 'jscs']);
     grunt.registerTask('test', ['mochacli']);
     grunt.registerTask('coverage', ['mocha_istanbul:coverage']);
     grunt.registerTask('default', ['lint', 'coverage', 'jsdoc']);

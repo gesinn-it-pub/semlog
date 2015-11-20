@@ -1,6 +1,6 @@
 {
   "name": "semlog",
-  "version": "0.3.6",
+  "version": "0.4.1",
   "description": "A semantic logger module, that colors and formats automatically depending on the content",
   "homepage": "https://github.com/Fannon/semlog",
   "author": {
@@ -24,16 +24,17 @@
   },
   "devDependencies": {
     "chai": "^3.0.0",
-    "codeclimate-test-reporter": "0.0.4",
+    "codeclimate-test-reporter": "0.1.1",
+    "grunt": "^0.4.5",
     "grunt-cli": "^0.1.13",
-    "grunt-contrib-jshint": "^0.11.2",
     "grunt-contrib-watch": "^0.6.1",
-    "grunt-jscs": "^1.8.0",
-    "grunt-jsdoc": "^0.6.7",
-    "grunt-mocha-cli": "^1.13.0",
-    "grunt-mocha-istanbul": "^2.4.0",
-    "istanbul": "^0.3.15",
-    "jshint-stylish": "^2.0.0",
+    "grunt-eslint": "^17.3.1",
+    "grunt-jscs": "^2.3.0",
+    "grunt-jsdoc": "^1.0.0",
+    "grunt-mocha-cli": "^2.0.0",
+    "grunt-mocha-istanbul": "^3.0.1",
+    "grunt-release": "^0.13.0",
+    "istanbul": "^0.4.0",
     "load-grunt-tasks": "^3.2.0",
     "time-grunt": "^1.2.1"
   },
