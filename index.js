@@ -32,6 +32,7 @@ if (!global.githubFannonSemlog) {
             logDateTime: true,
             printTime: true,
             printDateTime: false,
+            printDebug: true,
             historySize: 2048 // 0 for none
         }
     };
@@ -92,7 +93,11 @@ exports.log = function(obj, silent) {
                 }
             }
 
-            console.log(coloredMsg);
+            if (!config.printDebug && coloredMsg.indexOf('[D]') >= 0) {
+                // Supressing output of debug message
+            } else {
+                console.log(coloredMsg);
+            }
 
         // If obj has a circular structure or contains code, fall back to console.dir()
         } else {
