@@ -1,6 +1,6 @@
 {
   "name": "semlog",
-  "version": "0.4.1",
+  "version": "0.4.3",
   "description": "A semantic logger module, that colors and formats automatically depending on the content",
   "homepage": "https://github.com/Fannon/semlog",
   "author": {
