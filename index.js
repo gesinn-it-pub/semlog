@@ -75,16 +75,10 @@ exports.log = function(obj, silent) {
 
     if (!silent) {
 
-        // If obj is an object, use the debug function instead
-        if (obj !== null && typeof obj === 'object') {
-
-            if (obj instanceof Error) {
-                exports.error(obj);
-            } else {
-                exports.debug(obj);
-            }
-
-            // If the obj is a finite string (parsable to JSON), colorize and print it to the console
+        if (obj && obj instanceof Error) {
+            exports.error(obj);
+        } else if (obj && typeof obj === 'object') {
+            exports.debug(obj);
         } else if (msg) {
 
             var coloredMsg = exports.colorMessage(msg);
@@ -162,7 +156,7 @@ exports.debug = function(obj) {
  * @param {{}}        obj     Object
  */
 exports.error = function(obj) {
-    console.error(chalk.red('[E] ' + obj.message)) ;
+    console.error(chalk.red('[E] ' + obj.message));
     console.log(chalk.gray(JSON.stringify(obj, null, 4)));
     if (obj.stack) {
         console.log(chalk.gray(obj.stack));
@@ -323,12 +317,12 @@ exports.byteSize = function(obj) {
     }
 
     var s = str.length;
-    for (var i = str.length-1; i >= 0; i--) {
+    for (var i = str.length - 1; i >= 0; i--) {
         var code = str.charCodeAt(i);
         if (code > 0x7f && code <= 0x7ff) {
             s++;
         } else if (code > 0x7ff && code <= 0xffff) {
-            s+=2;
+            s += 2;
         }
         if (code >= 0xDC00 && code <= 0xDFFF) {
             i--;
@@ -350,13 +344,13 @@ exports.prettyBytes = function(bytes, si) {
     if (bytes < thresh) {
         return bytes + ' B';
     }
-    var units = si ? ['kB','MB','GB','TB','PB','EB','ZB','YB'] : ['KiB','MiB','GiB','TiB','PiB','EiB','ZiB','YiB'];
+    var units = si ? ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'] : ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
     var u = -1;
     do {
         bytes /= thresh;
         ++u;
-    } while(bytes >= thresh);
-    return bytes.toFixed(1)+' '+units[u];
+    } while (bytes >= thresh);
+    return bytes.toFixed(1) + ' ' + units[u];
 };
 
 /**

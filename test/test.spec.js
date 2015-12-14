@@ -76,6 +76,10 @@ describe('semlog logger', function() {
         semlog.updateConfig({printYaml: false});
     });
 
+    it('prints errors', function() {
+        semlog.error(new Error('Test Error'));
+    });
+
     it('handles various invalid log objects', function() {
         log(undefined);
         log(null);
