@@ -32,6 +32,7 @@ if (!global.githubFannonSemlog) {
             logDateTime: true,
             printTime: true,
             printDateTime: false,
+            printDebug: true,
             historySize: 2048 // 0 for none
         }
     };
@@ -77,9 +78,13 @@ exports.log = function(obj, silent) {
         // If obj is an object, use the debug function instead
         if (obj !== null && typeof obj === 'object') {
 
-            exports.debug(obj, silent);
+            if (obj instanceof Error) {
+                exports.error(obj);
+            } else {
+                exports.debug(obj);
+            }
 
-        // If the obj is a finite string (parsable to JSON), colorize and print it to the console
+            // If the obj is a finite string (parsable to JSON), colorize and print it to the console
         } else if (msg) {
 
             var coloredMsg = exports.colorMessage(msg);
@@ -92,9 +97,13 @@ exports.log = function(obj, silent) {
                 }
             }
 
-            console.log(coloredMsg);
+            if (!config.printDebug && coloredMsg.indexOf('[D]') >= 0) {
+                // Supressing output of debug message
+            } else {
+                console.log(coloredMsg);
+            }
 
-        // If obj has a circular structure or contains code, fall back to console.dir()
+            // If obj has a circular structure or contains code, fall back to console.dir()
         } else {
             // If the obj could not be converted to a finite string, print it with console.dir
             console.dir(obj);
@@ -123,49 +132,41 @@ exports.log = function(obj, silent) {
 /**
  * Prints out debugging information for the current model object
  *
- * @param {{}}        obj     Object from Development Model
- * @param {boolean}   silent  Silent mode (logs only to file)
+ * @param {{}}        obj     Object
  */
-exports.debug = function(obj, silent) {
+exports.debug = function(obj) {
+    if (global.githubFannonSemlog.config.printYaml) {
+        // Print YAML
+        var options = {
+            keysColor: 'white',
+            dashColor: 'white',
+            stringColor: 'yellow',
+            numberColor: 'blue'
+        };
 
-    if (typeof obj === 'object' && !silent) {
-
-        // Print Errors / Stacktraces
-        if (obj instanceof Error) {
-            // If the object is an error object, print the stacktrace
-            console.log(chalk.red('> ' + obj.toString())) ;
-            if (obj.stack) {
-                console.error(chalk.gray(obj.stack));
-            } else {
-                console.error(obj);
-            }
-
-            return;
+        if (!global.githubFannonSemlog.config.colorize) {
+            options.noColor = true;
         }
+        console.log(chalk.gray('---\n') + prettyjson.render(obj, options));
 
-        if (global.githubFannonSemlog.config.printYaml) {
-
-            // Print YAML
-            var options = {
-                keysColor: 'white',
-                dashColor: 'white',
-                stringColor: 'yellow',
-                numberColor: 'blue'
-            };
-
-            if (!global.githubFannonSemlog.config.colorize) {
-                options.noColor = true;
-            }
-            console.log(chalk.gray('---\n') + prettyjson.render(obj, options));
-
-        } else {
-            // Print indented JSON
-            var msg = JSON.stringify(obj, false, 4);
-            console.log(chalk.gray(msg));
-        }
-
+    } else {
+        // Print indented JSON
+        var msg = JSON.stringify(obj, false, 4);
+        console.log(chalk.gray(msg));
     }
+};
 
+/**
+ * Prints errors
+ *
+ * @param {{}}        obj     Object
+ */
+exports.error = function(obj) {
+    console.error(chalk.red('[E] ' + obj.message)) ;
+    console.log(chalk.gray(JSON.stringify(obj, null, 4)));
+    if (obj.stack) {
+        console.log(chalk.gray(obj.stack));
+    }
 };
 
 /**
