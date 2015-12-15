@@ -7,15 +7,11 @@
 
 'use strict';
 
-/* jshint unused: false */
-/* global global */
-
 //////////////////////////////////////////
 // Requirements                         //
 //////////////////////////////////////////
 
 var chalk = require('chalk');
-var events = require('events');
 var prettyjson = require('prettyjson');
 
 //////////////////////////////////////////
@@ -25,8 +21,8 @@ var prettyjson = require('prettyjson');
 if (!global.githubFannonSemlog) {
     global.githubFannonSemlog = {
         history: [],
-        events: new events.EventEmitter(),
         config: {
+            silent: false,
             colorize: true,
             printYaml: false,
             logDateTime: true,
@@ -54,73 +50,50 @@ exports.chalk = chalk;
  * @param {boolean}         [silent]  Dot not print message to the console, but stores it to the log history.
  */
 exports.log = function(obj, silent) {
-
-    // Expose Log Event
-    global.githubFannonSemlog.events.emit('log', obj);
-
-    if (obj === null || obj === undefined) {
-        return;
+    if (obj && obj instanceof Error) {
+        exports.error(obj, silent);
+    } else if (obj && typeof obj === 'object') {
+        exports.debug(obj, silent);
+    } else {
+        exports.message(obj, silent);
     }
+};
+
+exports.message = function(msg, silent) {
 
     var config = global.githubFannonSemlog.config;
-    var history = global.githubFannonSemlog.history;
-    var msg = false;
+    silent = silent || config.silent;
 
-    // Append message (unformatted and uncolored) to log history
-    try {
-        msg = JSON.parse(JSON.stringify(obj)); // Deep Copy, to avoid circular dependencies
-    } catch (e) {
-        exports.log('[W] Internal semlog error: Could not push circular/invalid object into the history', true);
+    if (typeof msg !== 'string') {
+        try {
+            msg = '' + JSON.stringify(msg);
+        } catch (e) {
+            msg = '[E] [SEMLOG] Could not stringify given parameter';
+        }
     }
+
+    exports.addToHistory(msg);
 
     if (!silent) {
 
-        if (obj && obj instanceof Error) {
-            exports.error(obj);
-        } else if (obj && typeof obj === 'object') {
-            exports.debug(obj);
-        } else if (msg) {
+        if (config.colorize) {
+            msg = exports.colorize(msg);
+        }
 
-            var coloredMsg = exports.colorMessage(msg);
-
-            if ((config.printTime || config.printDateTime) && coloredMsg.trim && coloredMsg.trim().length > 0) {
-                if (config.printDateTime) {
-                    coloredMsg = chalk.gray('[' + exports.humanDate() + '] ') + coloredMsg;
-                } else {
-                    coloredMsg = chalk.gray('[' + exports.humanTime() + '] ') + coloredMsg;
-                }
-            }
-
-            if (!config.printDebug && coloredMsg.indexOf('[D]') >= 0) {
-                // Supressing output of debug message
+        if ((config.printTime || config.printDateTime) && msg.trim && msg.trim().length > 0) {
+            if (config.printDateTime) {
+                msg = chalk.gray('[' + exports.humanDate() + '] ') + msg;
             } else {
-                console.log(coloredMsg);
+                msg = chalk.gray('[' + exports.humanTime() + '] ') + msg;
             }
+        }
 
-            // If obj has a circular structure or contains code, fall back to console.dir()
+        if (!config.printDebug && msg.indexOf('[D]') >= 0) {
+            // Supressing output of debug message
         } else {
-            // If the obj could not be converted to a finite string, print it with console.dir
-            console.dir(obj);
+            console.log(msg);
         }
     }
-
-    // Push it into the log history
-    if (msg) {
-
-        // Check that the message history size doesn't get to big
-        if (config.historySize && history.length >= config.historySize) {
-            history.shift();
-        }
-
-        // Prepend the logdate to the
-        if (config.logDate) {
-            msg = '[' + exports.humanDate() + '] ' + msg;
-        }
-
-        history.push(msg);
-    }
-
-
 };
 
 /**
@@ -128,25 +101,32 @@ exports.log = function(obj, silent) {
  *
  * @param {{}}        obj     Object
  */
-exports.debug = function(obj) {
-    if (global.githubFannonSemlog.config.printYaml) {
-        // Print YAML
-        var options = {
-            keysColor: 'white',
-            dashColor: 'white',
-            stringColor: 'yellow',
-            numberColor: 'blue'
-        };
+exports.debug = function(obj, silent) {
 
-        if (!global.githubFannonSemlog.config.colorize) {
-            options.noColor = true;
+    var config = global.githubFannonSemlog.config;
+    silent = silent || config.silent;
+    exports.addToHistory(obj);
+
+    if (!silent) {
+        if (global.githubFannonSemlog.config.printYaml) {
+            // Print YAML
+            var options = {
+                keysColor: 'white',
+                dashColor: 'white',
+                stringColor: 'yellow',
+                numberColor: 'blue'
+            };
+
+            if (!global.githubFannonSemlog.config.colorize) {
+                options.noColor = true;
+            }
+            console.log(chalk.gray('---\n') + prettyjson.render(obj, options));
+
+        } else {
+            // Print indented JSON
+            var msg = JSON.stringify(obj, false, 4);
+            console.log(chalk.gray(msg));
         }
-        console.log(chalk.gray('---\n') + prettyjson.render(obj, options));
-
-    } else {
-        // Print indented JSON
-        var msg = JSON.stringify(obj, false, 4);
-        console.log(chalk.gray(msg));
     }
 };
 
@@ -155,19 +135,45 @@ exports.debug = function(obj) {
  *
  * @param {{}}        obj     Object
  */
-exports.error = function(obj) {
-    console.error(chalk.red('[E] ' + obj.message));
-    console.log(chalk.gray(JSON.stringify(obj, null, 4)));
-    if (obj.stack) {
-        console.log(chalk.gray(obj.stack));
+exports.error = function(obj, silent) {
+
+    var config = global.githubFannonSemlog.config;
+    silent = silent || config.silent;
+    exports.addToHistory(obj);
+
+    if (!silent) {
+        console.error(chalk.red('[E] ' + obj.message));
+        console.log(chalk.gray(JSON.stringify(obj, null, 4)));
+        if (obj.stack) {
+            console.log(chalk.gray(obj.stack));
+        }
     }
 };
 
-/**
- * semlog events
- * Currently only 'log'
- */
-exports.events = global.githubFannonSemlog.events;
+
+exports.addToHistory = function(obj) {
+
+    var config = global.githubFannonSemlog.config;
+    var msg = '';
+
+    try {
+        msg = JSON.stringify(obj, null, 4);
+
+        // Check that the message history size doesn't get to big
+        if (config.historySize && global.githubFannonSemlog.history.length >= config.historySize) {
+            global.githubFannonSemlog.history.shift();
+        }
+
+        if (config.logDateTime) {
+            msg = '[' + exports.humanDate() + '] ' + msg;
+        }
+
+    } catch (e) {
+        msg = '[W] Internal semlog error: Could not push circular/invalid object into the history';
+    }
+
+    global.githubFannonSemlog.history.push(msg);
+};
 
 /**
  * Colors the messages by searching for specific indicator strings
@@ -176,7 +182,7 @@ exports.events = global.githubFannonSemlog.events;
  * @param {string} msg
  * @returns {string}
  */
-exports.colorMessage = function(msg) {
+exports.colorize = function(msg) {
 
     var colorMap = {
         '[E]': 'red',         // ERROR
@@ -187,13 +193,14 @@ exports.colorMessage = function(msg) {
         '[-]': 'red',         // REMOVED
         '[C]': 'cyan',        // CHANGED
         '[U]': 'grey',        // UNCHANGED
+        '[=]': 'grey',        // EQUAL
         '[D]': 'magenta',     // DEBUG
-        '[TODO]': 'magenta'  // TO-DO
+        '[TODO]': 'magenta'   // TO-DO
     };
 
     for (var searchString in colorMap) {
         var color = colorMap[searchString];
-        if (msg.indexOf && msg.indexOf(searchString) > -1) {
+        if (msg && msg.indexOf && msg.indexOf(searchString) > -1) {
             return chalk[color](msg);
         }
     }
