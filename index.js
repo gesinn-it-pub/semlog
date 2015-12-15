@@ -187,6 +187,7 @@ exports.colorize = function(msg) {
     var colorMap = {
         '[E]': 'red',         // ERROR
         '[W]': 'yellow',      // WARNING
+        '[?]': 'yellow',      // MISSING
         '[S]': 'green',       // SUCCESS
         '[i]': 'blue',        // INFO
         '[+]': 'green',       // ADDED
@@ -194,6 +195,7 @@ exports.colorize = function(msg) {
         '[C]': 'cyan',        // CHANGED
         '[U]': 'grey',        // UNCHANGED
         '[=]': 'grey',        // EQUAL
+        '[/]': 'grey',        // SKIPPED
         '[D]': 'magenta',     // DEBUG
         '[TODO]': 'magenta'   // TO-DO
     };
