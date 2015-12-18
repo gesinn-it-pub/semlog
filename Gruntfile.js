@@ -64,9 +64,20 @@ module.exports = function(grunt) {
                 tasks: ['lint', 'test']
             }
         },
-        jsdoc: {
-            dist: {
-                src: ['index.js', 'README.md'],
+        documentation: {
+            md: {
+                files: [{
+                    'src': ['index.js']
+                }],
+                options: {
+                    format: 'md',
+                    destination: 'doc'
+                }
+            },
+            html: {
+                files: [{
+                    'src': ['index.js']
+                }],
                 options: {
                     destination: 'doc'
                 }
@@ -83,7 +94,7 @@ module.exports = function(grunt) {
     grunt.registerTask('lint', ['eslint', 'jscs']);
     grunt.registerTask('test', ['mochacli']);
     grunt.registerTask('coverage', ['mocha_istanbul:coverage']);
-    grunt.registerTask('default', ['lint', 'coverage', 'jsdoc']);
+    grunt.registerTask('default', ['lint', 'coverage', 'documentation']);
 
     grunt.event.on('coverage', function(content, done) {
         done();

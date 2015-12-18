@@ -17,6 +17,9 @@ $ npm install --save semlog
 ```
 
 ## Usage
+### API Documentation
+* [API Documenatation](API.md)
+
 ### Import 
 ```javascript
 var semlog = require('semlog');

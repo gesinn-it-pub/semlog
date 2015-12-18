@@ -99,7 +99,7 @@ exports.message = function(msg, silent) {
 /**
  * Prints out debugging information for the current model object
  *
- * @param {{}}        obj     Object
+ * @param {object}        obj     Object
  */
 exports.debug = function(obj, silent) {
 
@@ -133,7 +133,7 @@ exports.debug = function(obj, silent) {
 /**
  * Prints errors
  *
- * @param {{}}        obj     Object
+ * @param {object}        obj     Object
  */
 exports.error = function(obj, silent) {
 
@@ -226,7 +226,7 @@ exports.getConfig = function() {
  * Updates the config.
  * Only those parameters that have been given will be updated
  *
- * @param {{}} config
+ * @param {object} config
  */
 exports.updateConfig = function(config) {
     for (var key in config) {

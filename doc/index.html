@@ -1,114 +1,564 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 <head>
-    <meta charset="utf-8">
-    <title>JSDoc: Home</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+  <meta charset='utf-8' />
+  <title>  | Documentation</title>
+  <meta name='viewport' content='width=device-width,initial-scale=1'>
+  <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Source+Code+Pro:400,500,700' rel='stylesheet' type='text/css'>
+  <link href='assets/bass.css' type='text/css' rel='stylesheet' />
+  <link href='assets/style.css' type='text/css' rel='stylesheet' />
+  <link href='assets/github.css' type='text/css' rel='stylesheet' />
 </head>
+<body class='documentation'>
+  <div class='container'>
+    <div class='clearfix md-mxn2'>
+      <div class='fixed md-show fix-3 overflow-auto max-height-100'>
+        <div class='py1 px2'>
+          <h3 class='mb0 no-anchor'></h3>
+          <div class='mb1'><code></code></div>
+          <input
+            placeholder='Filter'
+            id='filter-input'
+            class='col12 block field'
+            type='text' />
+          <div id='toc'>
+              <a
+                href='#byteSize'
+                class='block bold'>
+                byteSize
+              </a>
+              <a
+                href='#chalk'
+                class='block bold'>
+                chalk
+              </a>
+              <a
+                href='#cleanUrl'
+                class='block bold'>
+                cleanUrl
+              </a>
+              <a
+                href='#clearLogHistory'
+                class='block bold'>
+                clearLogHistory
+              </a>
+              <a
+                href='#colorize'
+                class='block bold'>
+                colorize
+              </a>
+              <a
+                href='#debug'
+                class='block bold'>
+                debug
+              </a>
+              <a
+                href='#error'
+                class='block bold'>
+                error
+              </a>
+              <a
+                href='#getConfig'
+                class='block bold'>
+                getConfig
+              </a>
+              <a
+                href='#getDateArray'
+                class='block bold'>
+                getDateArray
+              </a>
+              <a
+                href='#getLogHistory'
+                class='block bold'>
+                getLogHistory
+              </a>
+              <a
+                href='#humanDate'
+                class='block bold'>
+                humanDate
+              </a>
+              <a
+                href='#humanTime'
+                class='block bold'>
+                humanTime
+              </a>
+              <a
+                href='#log'
+                class='block bold'>
+                log
+              </a>
+              <a
+                href='#pad'
+                class='block bold'>
+                pad
+              </a>
+              <a
+                href='#prettyBytes'
+                class='block bold'>
+                prettyBytes
+              </a>
+              <a
+                href='#prettyNumber'
+                class='block bold'>
+                prettyNumber
+              </a>
+              <a
+                href='#roboDate'
+                class='block bold'>
+                roboDate
+              </a>
+              <a
+                href='#roboTime'
+                class='block bold'>
+                roboTime
+              </a>
+              <a
+                href='#stripTrailingSlash'
+                class='block bold'>
+                stripTrailingSlash
+              </a>
+              <a
+                href='#updateConfig'
+                class='block bold'>
+                updateConfig
+              </a>
+              <a
+                href='#'
+                class='block bold'>
+                
+              </a>
+          </div>
+        </div>
+      </div>
+      <div class='fix-margin-3'>
+        <div class='px2'>
+<div class='py1'><section class='py2 clearfix'>
+  <h2 id='byteSize' class='mt0'>
+    byteSize<span class='gray'>(obj)</span>
+  </h2>
+  <p>Returns the byte length of an utf8 string or an object (when parsed to JSON)</p>
 
-<body>
+    <h4>Parameters</h4>
+    <ul class='suppress-p-margin'>
+        <li> <strong>obj</strong>
+          :
+          <div class='force-inline'>
+            
+          </div>
+        </li>
+    </ul>
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+  <h2 id='chalk' class='mt0'>
+    chalk<span class='gray'></span>
+  </h2>
+  <p>Publicly export the chalk color library</p>
 
-<div id="main">
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+  <h2 id='cleanUrl' class='mt0'>
+    cleanUrl<span class='gray'>(url)</span>
+  </h2>
+  <p>Replace all (/.../g) leading slash (^\/) or (|) trailing slash (\/$) with an empty string.</p>
 
-    <h1 class="page-title">Home</h1>
+    <h4>Parameters</h4>
+    <ul class='suppress-p-margin'>
+        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code> <strong>url</strong>
+          :
+          <div class='force-inline'>
+            <p>URL / Path to cleanup</p>
 
-    
+          </div>
+        </li>
+    </ul>
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code></code>
+      
+      <div class='force-inline'>
+        
+      </div>
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+  <h2 id='clearLogHistory' class='mt0'>
+    clearLogHistory<span class='gray'></span>
+  </h2>
+  <p>Clears (empties) the log object</p>
 
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+  <h2 id='colorize' class='mt0'>
+    colorize<span class='gray'>(msg)</span>
+  </h2>
+  <p>Colors the messages by searching for specific indicator strings
+TODO: Allow to add to the colorMap</p>
 
+    <h4>Parameters</h4>
+    <ul class='suppress-p-margin'>
+        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code> <strong>msg</strong>
+          :
+          <div class='force-inline'>
+            
+          </div>
+        </li>
+    </ul>
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+      
+      <div class='force-inline'>
+        
+      </div>
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+  <h2 id='debug' class='mt0'>
+    debug<span class='gray'>(obj, silent)</span>
+  </h2>
+  <p>Prints out debugging information for the current model object</p>
 
-    
+    <h4>Parameters</h4>
+    <ul class='suppress-p-margin'>
+        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></code> <strong>obj</strong>
+          :
+          <div class='force-inline'>
+            <p>Object</p>
 
+          </div>
+        </li>
+        <li> <strong>silent</strong>
+          :
+          <div class='force-inline'>
+            
+          </div>
+        </li>
+    </ul>
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+  <h2 id='error' class='mt0'>
+    error<span class='gray'>(obj, silent)</span>
+  </h2>
+  <p>Prints errors</p>
 
-    <h3> </h3>
+    <h4>Parameters</h4>
+    <ul class='suppress-p-margin'>
+        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></code> <strong>obj</strong>
+          :
+          <div class='force-inline'>
+            <p>Object</p>
 
+          </div>
+        </li>
+        <li> <strong>silent</strong>
+          :
+          <div class='force-inline'>
+            
+          </div>
+        </li>
+    </ul>
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+  <h2 id='getConfig' class='mt0'>
+    getConfig<span class='gray'></span>
+  </h2>
+  <p>Gets the current config</p>
 
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+  <h2 id='getDateArray' class='mt0'>
+    getDateArray<span class='gray'>([date])</span>
+  </h2>
+  <p>Returns an array with date / time information
+Starts with year at index 0 up to index 6 for milliseconds</p>
 
+    <h4>Parameters</h4>
+    <ul class='suppress-p-margin'>
+        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a></code>]</code> <strong>date</strong>
+          :
+          <div class='force-inline'>
+            <p>Optional date object. If falsy, will take current time.</p>
 
+          </div>
+        </li>
+    </ul>
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></code></code>
+      
+      <div class='force-inline'>
+        
+      </div>
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+  <h2 id='getLogHistory' class='mt0'>
+    getLogHistory<span class='gray'></span>
+  </h2>
+  <p>Returns the global.moboLogObject</p>
 
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></code></code>
+      
+      <div class='force-inline'>
+        
+      </div>
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+  <h2 id='humanDate' class='mt0'>
+    humanDate<span class='gray'>([date])</span>
+  </h2>
+  <p>Returns nicely formatted date-time</p>
 
+    <h4>Parameters</h4>
+    <ul class='suppress-p-margin'>
+        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></code>]</code> <strong>date</strong>
+          :
+          <div class='force-inline'>
+            
+          </div>
+        </li>
+    </ul>
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+      
+      <div class='force-inline'>
+        
+      </div>
+    <h4>Examples</h4>
+<pre class='overflow-auto'><span class="hljs-number">2015</span>-<span class="hljs-number">02</span>-<span class="hljs-number">10</span> <span class="hljs-number">16</span>:<span class="hljs-number">01</span>:<span class="hljs-number">12</span></pre>
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+  <h2 id='humanTime' class='mt0'>
+    humanTime<span class='gray'>([date])</span>
+  </h2>
+  <p>Returns nicely formatted date-time</p>
 
+    <h4>Parameters</h4>
+    <ul class='suppress-p-margin'>
+        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></code>]</code> <strong>date</strong>
+          :
+          <div class='force-inline'>
+            
+          </div>
+        </li>
+    </ul>
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+      
+      <div class='force-inline'>
+        
+      </div>
+    <h4>Examples</h4>
+<pre class='overflow-auto'><span class="hljs-number">16</span>:<span class="hljs-number">01</span>:<span class="hljs-number">12</span></pre>
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+  <h2 id='log' class='mt0'>
+    log<span class='gray'>(msg, obj, [silent])</span>
+  </h2>
+  <p>Custom Logging function</p>
+<p>Writes Logs to console, stringifies objects first</p>
 
+    <h4>Parameters</h4>
+    <ul class='suppress-p-margin'>
+        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code> or <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></code> <strong>msg</strong>
+          :
+          <div class='force-inline'>
+            <p>Message String or Object</p>
 
+          </div>
+        </li>
+        <li> <strong>obj</strong>
+          :
+          <div class='force-inline'>
+            
+          </div>
+        </li>
+        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> <strong>silent</strong>
+          :
+          <div class='force-inline'>
+            <p>Dot not print message to the console, but stores it to the log history.</p>
 
-    
+          </div>
+        </li>
+    </ul>
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+  <h2 id='pad' class='mt0'>
+    pad<span class='gray'>(number, digits)</span>
+  </h2>
+  <p>Pad a number with n digits</p>
 
+    <h4>Parameters</h4>
+    <ul class='suppress-p-margin'>
+        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code> <strong>number</strong>
+          :
+          <div class='force-inline'>
+            <p>number to pad</p>
 
+          </div>
+        </li>
+        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code> <strong>digits</strong>
+          :
+          <div class='force-inline'>
+            <p>number of total digits</p>
 
+          </div>
+        </li>
+    </ul>
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+      
+      <div class='force-inline'>
+        
+      </div>
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+  <h2 id='prettyBytes' class='mt0'>
+    prettyBytes<span class='gray'>(bytes, si)</span>
+  </h2>
+  
+    <h4>Parameters</h4>
+    <ul class='suppress-p-margin'>
+        <li> <strong>bytes</strong>
+          :
+          <div class='force-inline'>
+            
+          </div>
+        </li>
+        <li> <strong>si</strong>
+          :
+          <div class='force-inline'>
+            
+          </div>
+        </li>
+    </ul>
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+      
+      <div class='force-inline'>
+        
+      </div>
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+  <h2 id='prettyNumber' class='mt0'>
+    prettyNumber<span class='gray'>(number)</span>
+  </h2>
+  <p>Adds dots as thousand separators to numbers</p>
+<p><a href="http://stackoverflow.com/a/2901298">http://stackoverflow.com/a/2901298</a></p>
 
-    <section>
-        <article><p><a href="https://www.npmjs.com/package/semlog"><img src="https://img.shields.io/npm/v/semlog.svg?style=flat" alt="npm version"></a>
-<a href="https://david-dm.org/Fannon/semlog"><img src="https://img.shields.io/david/Fannon/semlog.svg?style=flat" alt="Dependency Status"></a>
-<a href="http://travis-ci.org/Fannon/semlog"><img src="https://img.shields.io/travis/Fannon/semlog.svg?style=flat" alt="Build Status"></a>
-<a href="https://codeclimate.com/github/Fannon/semlog"><img src="https://codeclimate.com/github/Fannon/semlog/badges/gpa.svg" alt="Code Climate"></a>
-<a href="https://codeclimate.com/github/Fannon/semlog"><img src="https://codeclimate.com/github/Fannon/semlog/badges/coverage.svg" alt="Test Coverage"></a></p>
-<blockquote>
-<p>A semantic logger module, that colors / formats automatically</p>
-</blockquote>
-<h2>About</h2><p>semlog is a simple logger utiltiy that automatically colors and formats the logging messages and objects, according to their content. 
-It'll use a global object to store the config and the log history, so it can be easily used thoughout a project.</p>
-<p>The semlog approach might not be for anyone, it's a lazy mans logging utility :)</p>
-<h2>Install</h2><pre class="prettyprint source lang-sh"><code>$ npm install --save semlog</code></pre><h2>Usage</h2><h3>Import</h3><pre class="prettyprint source lang-javascript"><code>var semlog = require('semlog');
-var log = semlog.log; // Optional shortcut for logging</code></pre><h3>Logging</h3><pre class="prettyprint source lang-javascript"><code>// Pretty log an error object
-log(new Error('error log entry'));
+    <h4>Parameters</h4>
+    <ul class='suppress-p-margin'>
+        <li> <strong>number</strong>
+          :
+          <div class='force-inline'>
+            
+          </div>
+        </li>
+    </ul>
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+      
+      <div class='force-inline'>
+        
+      </div>
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+  <h2 id='roboDate' class='mt0'>
+    roboDate<span class='gray'>([date])</span>
+  </h2>
+  <p>Returns a formatted date-time, optimized for machines</p>
 
-// Pretty log an object (no circular object supported, sorry)
-log({title: 'Object log entry', number: 10});
+    <h4>Parameters</h4>
+    <ul class='suppress-p-margin'>
+        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></code>]</code> <strong>date</strong>
+          :
+          <div class='force-inline'>
+            
+          </div>
+        </li>
+    </ul>
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+      
+      <div class='force-inline'>
+        
+      </div>
+    <h4>Examples</h4>
+<pre class='overflow-auto'><span class="hljs-number">2015</span>-<span class="hljs-number">02</span>-<span class="hljs-number">10</span>_16-<span class="hljs-number">00</span>-<span class="hljs-number">08</span></pre>
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+  <h2 id='roboTime' class='mt0'>
+    roboTime<span class='gray'>([date])</span>
+  </h2>
+  <p>Returns a formatted date-time, optimized for machines</p>
 
-// Log strings
-log('[i] info log entry ');
-log('[W] warning log entry');
-log('[E] error log entry');
-log('[S] success log entry');
-log('[D] debug log entry');
-log('[+] added log entry');
-log('[-] removed log entry');
-log('[C] changed log entry');
-log('[TODO] todo log entry');</code></pre><h3>Logger functions</h3><pre class="prettyprint source lang-javascript"><code>// Returns an array with the latest log messages (depending on the config.
-var logArchive = semlog.getLogHistory();
+    <h4>Parameters</h4>
+    <ul class='suppress-p-margin'>
+        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></code>]</code> <strong>date</strong>
+          :
+          <div class='force-inline'>
+            
+          </div>
+        </li>
+    </ul>
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+      
+      <div class='force-inline'>
+        
+      </div>
+    <h4>Examples</h4>
+<pre class='overflow-auto'><span class="hljs-number">2015</span>-<span class="hljs-number">02</span>-<span class="hljs-number">10</span>_16-<span class="hljs-number">00</span>-<span class="hljs-number">08</span></pre>
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+  <h2 id='stripTrailingSlash' class='mt0'>
+    stripTrailingSlash<span class='gray'>(url)</span>
+  </h2>
+  <p>Strips trailing slashes from URL</p>
 
-// Get current logger config
-var config = semlog.getConfig();
+    <h4>Parameters</h4>
+    <ul class='suppress-p-margin'>
+        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code> <strong>url</strong>
+          :
+          <div class='force-inline'>
+            <p>URL to cleanup</p>
 
-// Change default options:
-// This will only update the option that are actually given
-semlog.updateConfig({
-    colorize: true,
-    printYaml: false,
-    logDateTime: true,
-    printTime: true,
-    printDateTime: false,
-    historySize: 2048 // 0 for none
-});</code></pre><h3>Helper Functions and more examples</h3><p>semlog has some built in helper functions like returning nicely formatted dates.</p>
-<p>For a complete API Doc, please view the <a href="https://cdn.rawgit.com/Fannon/semlog/master/doc/">API docs</a>.</p>
-<p>More example can be found in the <a href="https://github.com/Fannon/semlog/blob/master/test/test.spec.js">unit test</a> file.</p>
-<h2>License</h2><p>MIT © <a href="http://www.fannon.de">Simon Heimler</a></p></article>
-    </section>
+          </div>
+        </li>
+    </ul>
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code></code>
+      
+      <div class='force-inline'>
+        
+      </div>
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+  <h2 id='updateConfig' class='mt0'>
+    updateConfig<span class='gray'>(config)</span>
+  </h2>
+  <p>Updates the config.
+Only those parameters that have been given will be updated</p>
 
+    <h4>Parameters</h4>
+    <ul class='suppress-p-margin'>
+        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></code> <strong>config</strong>
+          :
+          <div class='force-inline'>
+            
+          </div>
+        </li>
+    </ul>
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+  <h2 id='' class='mt0'>
+    <span class='gray'></span>
+  </h2>
+  <p>semlog
+A semantic logger that colors and formats messages automatically according to the content</p>
 
-
-
-
-
+</section>
 </div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#byteSize">byteSize</a></li><li><a href="global.html#chalk">chalk</a></li><li><a href="global.html#cleanUrl">cleanUrl</a></li><li><a href="global.html#clearLogHistory">clearLogHistory</a></li><li><a href="global.html#colorize">colorize</a></li><li><a href="global.html#debug">debug</a></li><li><a href="global.html#error">error</a></li><li><a href="global.html#getConfig">getConfig</a></li><li><a href="global.html#getDateArray">getDateArray</a></li><li><a href="global.html#getLogHistory">getLogHistory</a></li><li><a href="global.html#humanDate">humanDate</a></li><li><a href="global.html#humanTime">humanTime</a></li><li><a href="global.html#log">log</a></li><li><a href="global.html#pad">pad</a></li><li><a href="global.html#prettyBytes">prettyBytes</a></li><li><a href="global.html#prettyNumber">prettyNumber</a></li><li><a href="global.html#roboDate">roboDate</a></li><li><a href="global.html#roboTime">roboTime</a></li><li><a href="global.html#stripTrailingSlash">stripTrailingSlash</a></li><li><a href="global.html#updateConfig">updateConfig</a></li></ul>
-</nav>
-
-<br class="clear">
-
-<footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Dec 15 2015 09:00:08 GMT+0100 (Mitteleuropäische Zeit)
-</footer>
-
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src='assets/anchor.js'></script>
+  <script src='assets/site.js'></script>
 </body>
 </html>
