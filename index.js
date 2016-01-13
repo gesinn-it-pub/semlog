@@ -197,6 +197,7 @@ exports.colorize = function(msg) {
         '[=]': 'grey',        // EQUAL
         '[/]': 'grey',        // SKIPPED
         '[D]': 'magenta',     // DEBUG
+        '[T]': 'magenta',     // TO-DO
         '[TODO]': 'magenta'   // TO-DO
     };
 
