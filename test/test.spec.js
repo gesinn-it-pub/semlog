@@ -153,6 +153,15 @@ describe('semlog logger', function() {
 
     });
 
+    it('returns log statistics', function() {
+
+        log(semlog.getStatistics());
+        var statistics = semlog.getStatistics();
+
+        expect(statistics.total).to.be.a('number');
+
+    });
+
 });
 
 describe('semlog utilities', function() {

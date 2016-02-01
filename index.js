@@ -30,6 +30,12 @@ if (!global.githubFannonSemlog) {
             printDateTime: false,
             printDebug: true,
             historySize: 2048 // 0 for none
+        },
+        statistics: {
+            debug: 0,
+            warning: 0,
+            error: 0,
+            total: 0
         }
     };
 }
@@ -60,6 +66,15 @@ exports.log = function(obj, silent) {
 };
 
 exports.message = function(msg, silent) {
+
+    global.githubFannonSemlog.statistics.total += 1;
+    if (msg && msg.indexOf && msg.indexOf('[D]') >= 0) {
+        global.githubFannonSemlog.statistics.debug += 1;
+    } else if (msg && msg.indexOf && msg.indexOf('[W]') >= 0) {
+        global.githubFannonSemlog.statistics.warning += 1;
+    } else if (msg && msg.indexOf && msg.indexOf('[E]') >= 0) {
+        global.githubFannonSemlog.statistics.error += 1;
+    }
 
     var config = global.githubFannonSemlog.config;
     silent = silent || config.silent;
@@ -103,6 +118,8 @@ exports.message = function(msg, silent) {
  */
 exports.debug = function(obj, silent) {
 
+    global.githubFannonSemlog.statistics.total += 1;
+
     var config = global.githubFannonSemlog.config;
     silent = silent || config.silent;
     exports.addToHistory(obj);
@@ -136,6 +153,9 @@ exports.debug = function(obj, silent) {
  * @param {object}        obj     Object
  */
 exports.error = function(obj, silent) {
+
+    global.githubFannonSemlog.statistics.total += 1;
+    global.githubFannonSemlog.statistics.error += 1;
 
     var config = global.githubFannonSemlog.config;
     silent = silent || config.silent;
@@ -221,6 +241,14 @@ exports.colorize = function(msg) {
  */
 exports.getConfig = function() {
     return global.githubFannonSemlog.config;
+};
+
+
+/**
+ * Gets the current config
+ */
+exports.getStatistics = function() {
+    return global.githubFannonSemlog.statistics;
 };
 
 /**
