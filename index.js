@@ -216,6 +216,7 @@ exports.colorize = function(msg) {
         '[U]': 'grey',        // UNCHANGED
         '[=]': 'grey',        // EQUAL
         '[/]': 'grey',        // SKIPPED
+        '[V]': 'magenta',     // VERBOSE
         '[D]': 'magenta',     // DEBUG
         '[T]': 'magenta',     // TO-DO
         '[TODO]': 'magenta'   // TO-DO
@@ -269,8 +270,8 @@ exports.updateConfig = function(config) {
  * Clears (empties) the log object
  */
 exports.clearLogHistory = function() {
-    return global.githubFannonSemlog.history = [];
-    return global.githubFannonSemlog.statistics = {
+    global.githubFannonSemlog.history = [];
+    global.githubFannonSemlog.statistics = {
         debug: 0,
         warning: 0,
         error: 0,
