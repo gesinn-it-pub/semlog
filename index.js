@@ -29,6 +29,7 @@ if (!global.githubFannonSemlog) {
             printTime: true,
             printDateTime: false,
             printDebug: true,
+            printVerbose: true,
             historySize: 2048 // 0 for none
         },
         statistics: {
@@ -68,7 +69,7 @@ exports.log = function(obj, silent) {
 exports.message = function(msg, silent) {
 
     global.githubFannonSemlog.statistics.total += 1;
-    if (msg && msg.indexOf && msg.indexOf('[D]') >= 0) {
+    if (msg && msg.indexOf && (msg.indexOf('[V]') >= 0 || msg.indexOf('[D]') >= 0)) {
         global.githubFannonSemlog.statistics.debug += 1;
     } else if (msg && msg.indexOf && msg.indexOf('[W]') >= 0) {
         global.githubFannonSemlog.statistics.warning += 1;
@@ -103,7 +104,9 @@ exports.message = function(msg, silent) {
             }
         }
 
-        if (!config.printDebug && msg.indexOf('[D]') >= 0) {
+        if (!config.printVerbose && msg.indexOf('[V]') >= 0) {
+            // Supressing output of verbose message
+        } else if (!config.printDebug && msg.indexOf('[D]') >= 0) {
             // Supressing output of debug message
         } else {
             console.log(msg);
