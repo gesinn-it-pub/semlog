@@ -1,22 +1,14 @@
 language: node_js
 node_js:
-  - '0.10'
-  - '0.12'
-  - '4.2'
-  - '5.1'
+  - 8
+  - 10
+  - 12
 
 sudo: false
 
 addons:
   code_climate:
     repo_token: d025e5a435157e5cf3b9573054d1c2777cc6c8eb2d4d6abb6a0c976e9c4b75f6
-
-notifications:
-  email:
-    on_success: [never] # default: change
-    on_failure: [always] # default: always
-    recipients:
-      - info@fannon.de
 
 after_script:
   - cat coverage/lcov.info | codeclimate

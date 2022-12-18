@@ -46,7 +46,7 @@ describe('semlog logger', function() {
         console.log(' Testing Log Objects and Errors');
         console.log('-------------------------------------------------------------');
 
-        // Create a new object, that prototypally inherits from the Error constructor.
+        // Create a new object, that prototypical inherits from the Error constructor.
         function MyError(message) {
             this.name = 'MyError';
             this.message = message || 'Default Message';
