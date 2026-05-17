@@ -1,0 +1,2 @@
+:project_name: semlog
+:project_type: nodejs
