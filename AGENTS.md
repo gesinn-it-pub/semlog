@@ -244,6 +244,28 @@ Guidelines:
 - Use `chore` only for repository maintenance tasks that do not affect
   runtime behavior, dependencies, CI configuration, or tests
 
+# Publish Workflow
+
+**Publish workflow**
+
+Publishing is triggered automatically when a GitHub Release is
+published. The workflow runs all tests before publishing.
+
+**Registry:** [npmjs.org](https://www.npmjs.com)
+
+Authentication uses [npm
+provenance](https://docs.npmjs.com/generating-provenance-statements) via
+OIDC (OpenID Connect) — no static `NPM_TOKEN` secret is required.
+
+The package must be configured as a Trusted Publisher on npmjs.org
+(one-time setup per package): npmjs.org → Package Settings → Publishing
+→ Trusted Publishers → add this repository.
+
+# Release Workflow
+
+Unresolved directive in AGENTS-source.adoc -
+include::docs/gesinn-it-docs-master-pub/sections/nodejs/release-workflow.adoc\[\]
+
 # Versioning
 
 # Versioning and Releases
