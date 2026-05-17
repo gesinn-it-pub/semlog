@@ -12,14 +12,7 @@ include::docs/gesinn-it-docs-master-pub/snippets/{project_type}/coding-conventio
 
 == Test Workflow
 
-Tests run locally without Docker.
-
-*Run tests*
-
-[source,console]
-----
-npm test
-----
+include::docs/gesinn-it-docs-master-pub/snippets/nodejs/ci-npm.adoc[]
 
 == Commit Convention
 
