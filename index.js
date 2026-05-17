@@ -168,7 +168,7 @@ exports.error = function (obj, silent) {
 
 exports.addToHistory = function (obj) {
     const config = global.githubFannonSemlog.config;
-    let msg = '';
+    let msg;
 
     try {
         msg = JSON.stringify(obj, null, 4);
@@ -336,7 +336,7 @@ exports.stripTrailingSlash = function (url) {
  * @see http://stackoverflow.com/a/23329386
  */
 exports.byteSize = function (obj) {
-    let str = '';
+    let str;
 
     if (typeof obj === 'object') {
         str = JSON.stringify(obj);
