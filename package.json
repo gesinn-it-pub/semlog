@@ -50,6 +50,7 @@
   },
   "scripts": {
     "lint": "eslint index.js test/",
+    "format": "prettier --write index.js test/",
     "format:check": "prettier --check index.js test/",
     "test": "mocha 'test/**/*.spec.js'",
     "test:coverage": "c8 mocha 'test/**/*.spec.js'"
