@@ -103,8 +103,7 @@ exports.message = function (msg, silent) {
         }
 
         const suppress =
-            (!config.printVerbose && msg.indexOf('[V]') >= 0) ||
-            (!config.printDebug && msg.indexOf('[D]') >= 0);
+            (!config.printVerbose && msg.indexOf('[V]') >= 0) || (!config.printDebug && msg.indexOf('[D]') >= 0);
         if (!suppress) {
             console.log(msg);
         }
