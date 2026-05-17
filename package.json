@@ -1,6 +1,6 @@
 {
   "name": "semlog",
-  "version": "0.6.11",
+  "version": "0.7.0",
   "description": "A semantic logger module, that colors and formats automatically depending on the content",
   "homepage": "https://github.com/gesinn-it-pub/semlog",
   "author": {
@@ -59,7 +59,13 @@
     "reporter": "spec"
   },
   "c8": {
-    "reporter": ["lcov", "text", "clover"],
-    "include": ["index.js"]
+    "reporter": [
+      "lcov",
+      "text",
+      "clover"
+    ],
+    "include": [
+      "index.js"
+    ]
   }
 }
