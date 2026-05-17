@@ -131,7 +131,7 @@ Check (CI): `prettier --check src/ test/`
 npm ci
 ```
 
-Run all checks (lint + format check + tests):
+Run tests:
 
 ``` console
 npm test
@@ -166,7 +166,7 @@ npm run format
 Run tests with coverage report:
 
 ``` console
-npm run test-coverage
+npm run test:coverage
 ```
 
 # Commit Convention
