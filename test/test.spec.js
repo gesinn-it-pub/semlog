@@ -71,6 +71,12 @@ describe('semlog logger', function () {
         semlog.updateConfig({ printYaml: false });
     });
 
+    it('prints objects as YAML without color when colorize is false', function () {
+        semlog.updateConfig({ printYaml: true, colorize: false });
+        log({ key: 'value' });
+        semlog.updateConfig({ printYaml: false, colorize: true });
+    });
+
     it('prints errors', function () {
         semlog.error(new Error('Test Error'));
     });
@@ -80,6 +86,13 @@ describe('semlog logger', function () {
         log(null);
         log(Error);
         log(Infinity);
+    });
+
+    it('suppresses verbose and debug messages when configured', function () {
+        semlog.updateConfig({ printVerbose: false, printDebug: false });
+        log('[V] suppressed verbose');
+        log('[D] suppressed debug');
+        semlog.updateConfig({ printVerbose: true, printDebug: true });
     });
 
     it('returns the log history as an array', function () {
@@ -137,6 +150,14 @@ describe('semlog logger', function () {
         expect(logHistory.length).to.equal(historySize);
     });
 
+    it('handles circular objects in history gracefully', function () {
+        const circular = {};
+        circular.self = circular;
+        semlog.addToHistory(circular);
+        const history = semlog.getLogHistory();
+        expect(history[history.length - 1]).to.include('[W]');
+    });
+
     it('returns the log archive as non circular array', function () {
         log(semlog.getLogHistory());
         const logHistory = semlog.getLogHistory();
@@ -166,6 +187,7 @@ describe('semlog utilities', function () {
     });
 
     it('pretty prints bytes', function () {
+        expect(semlog.prettyBytes(500)).to.equal('500 B');
         expect(semlog.prettyBytes(1024)).to.be.a('string');
         expect(semlog.prettyBytes(1024)).to.equal('1.0 KiB');
         expect(semlog.prettyBytes(1024, true)).to.equal('1.0 kB');
@@ -216,5 +238,11 @@ describe('semlog utilities', function () {
     it('calculates the bytesize of objects (parsed to JSON)', function () {
         expect(semlog.byteSize({ title: 'internationalization' })).to.be.a('number');
         expect(semlog.byteSize({ title: 'internationalization' })).to.equal(32);
+    });
+
+    it('calculates the bytesize of multibyte strings', function () {
+        expect(semlog.byteSize('\u00F1')).to.equal(2); // 2-byte UTF-8 (ñ)
+        expect(semlog.byteSize('\u20AC')).to.equal(3); // 3-byte UTF-8 (€)
+        expect(semlog.byteSize('\uD840\uDC00')).to.equal(4); // 4-byte UTF-8 surrogate pair (𠀀)
     });
 });

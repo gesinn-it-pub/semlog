@@ -94,7 +94,7 @@ exports.message = function (msg, silent) {
             msg = exports.colorize(msg);
         }
 
-        if ((config.printTime || config.printDateTime) && msg.trim && msg.trim().length > 0) {
+        if ((config.printTime || config.printDateTime) && msg.trim().length > 0) {
             if (config.printDateTime) {
                 msg = chalk.gray('[' + exports.humanDate() + '] ') + msg;
             } else {
@@ -102,11 +102,10 @@ exports.message = function (msg, silent) {
             }
         }
 
-        if (!config.printVerbose && msg.indexOf('[V]') >= 0) {
-            // Supressing output of verbose message
-        } else if (!config.printDebug && msg.indexOf('[D]') >= 0) {
-            // Supressing output of debug message
-        } else {
+        const suppress =
+            (!config.printVerbose && msg.indexOf('[V]') >= 0) ||
+            (!config.printDebug && msg.indexOf('[D]') >= 0);
+        if (!suppress) {
             console.log(msg);
         }
     }
@@ -401,7 +400,7 @@ exports.getDateArray = function (date) {
         exports.pad(date.getHours(), 2),
         exports.pad(date.getMinutes(), 2),
         exports.pad(date.getSeconds(), 2),
-        exports.pad(date.getMilliseconds(), 2),
+        exports.pad(date.getMilliseconds(), 3),
     ];
 };
 
