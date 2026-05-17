@@ -28,7 +28,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Upgrade npm (Trusted Publishing requires npm >= 11.5.1)
-        run: npm install -g npm@^11
+        run: corepack prepare npm@^11 --activate
 
       - name: Install dependencies
         run: npm ci
