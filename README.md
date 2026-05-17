@@ -1,8 +1,5 @@
 [![npm version](https://img.shields.io/npm/v/semlog.svg?style=flat)](https://www.npmjs.com/package/semlog)
-[![Dependency Status](https://img.shields.io/david/Fannon/semlog.svg?style=flat)](https://david-dm.org/Fannon/semlog)
-[![Build Status](https://img.shields.io/travis/Fannon/semlog.svg?style=flat)](http://travis-ci.org/Fannon/semlog)
-[![Code Climate](https://codeclimate.com/github/Fannon/semlog/badges/gpa.svg)](https://codeclimate.com/github/Fannon/semlog)
-[![Test Coverage](https://codeclimate.com/github/Fannon/semlog/badges/coverage.svg)](https://codeclimate.com/github/Fannon/semlog)
+[![CI](https://github.com/gesinn-it-pub/semlog/actions/workflows/ci.yml/badge.svg)](https://github.com/gesinn-it-pub/semlog/actions/workflows/ci.yml)
 > A semantic logger module, that colors / formats automatically
 
 ## About

@@ -2,18 +2,31 @@
   "name": "semlog",
   "version": "0.6.11",
   "description": "A semantic logger module, that colors and formats automatically depending on the content",
-  "homepage": "https://github.com/Fannon/semlog",
+  "homepage": "https://github.com/gesinn-it-pub/semlog",
   "author": {
     "name": "Simon Heimler",
     "email": "heimlersimon@gmail.com",
     "url": "http://www.fannon.de"
   },
-  "repository": "Fannon/semlog",
+  "contributors": [
+    {
+      "name": "gesinn.it GmbH & Co. KG",
+      "email": "github@gesinn.it",
+      "url": "https://gesinn.it"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gesinn-it-pub/semlog.git"
+  },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
   "license": "MIT",
   "main": "index.js",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "keywords": [
     "semlog",
     "log",
@@ -26,22 +39,27 @@
     "prettyjson": "^1.2.1"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
-    "codeclimate-test-reporter": "0.3.3",
-    "grunt": "^1.3.0",
-    "grunt-cli": "^1.3.2",
-    "grunt-documentation": "^1.2.0",
-    "grunt-eslint": "^22.0.0",
-    "grunt-jscs": "^3.0.1",
-    "grunt-mocha-cli": "^5.0.0",
-    "grunt-mocha-istanbul": "^5.0.2",
-    "grunt-release": "^0.14.0",
-    "istanbul": "^0.4.5",
-    "load-grunt-tasks": "^5.0.0",
-    "mocha": "^5.0.0",
-    "time-grunt": "^1.4.0"
+    "@eslint/js": "^9.0.0",
+    "c8": "^10.0.0",
+    "chai": "^4.3.7",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^10.0.0",
+    "globals": "^15.0.0",
+    "mocha": "^10.0.0",
+    "prettier": "^3.0.0"
   },
   "scripts": {
-    "test": "grunt"
+    "lint": "eslint index.js test/",
+    "format:check": "prettier --check index.js test/",
+    "test": "mocha 'test/**/*.spec.js'",
+    "test:coverage": "c8 mocha 'test/**/*.spec.js'"
+  },
+  "mocha": {
+    "timeout": 16000,
+    "reporter": "spec"
+  },
+  "c8": {
+    "reporter": ["lcov", "text", "clover"],
+    "include": ["index.js"]
   }
 }
