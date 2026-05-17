@@ -37,6 +37,8 @@ jobs:
         run: npm test
 
       - name: Publish
-        run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ''  # cleared to allow OIDC Trusted Publisher authentication
+        run: |
+          unset NODE_AUTH_TOKEN
+          unset NPM_CONFIG_USERCONFIG
+          npm --version
+          npm publish --access public
