@@ -125,12 +125,48 @@ Check (CI): `prettier --check src/ test/`
 
 # Test Workflow
 
-Tests run locally without Docker.
+**Install dependencies**
 
-**Run tests**
+``` console
+npm ci
+```
+
+Run all checks (lint + format check + tests):
 
 ``` console
 npm test
+```
+
+Run only ESLint:
+
+``` console
+npm run lint
+```
+
+Check formatting (Prettier, non-destructive):
+
+``` console
+npm run format:check
+```
+
+**Pre-commit gate**
+
+Run before every commit:
+
+``` console
+make ci 2>&1 | tee /tmp/ci.log; echo "EXIT:$?"
+```
+
+Auto-format source files:
+
+``` console
+npm run format
+```
+
+Run tests with coverage report:
+
+``` console
+npm run test-coverage
 ```
 
 # Commit Convention
