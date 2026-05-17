@@ -19,8 +19,8 @@ $ npm install --save semlog
 
 ### Import 
 ```javascript
-var semlog = require('semlog');
-var log = semlog.log; // Optional shortcut for logging
+const semlog = require('semlog');
+const log = semlog.log; // Optional shortcut for logging
 ```
 
 ### Logging
@@ -46,10 +46,10 @@ log('[TODO] todo log entry');
 ### Logger functions
 ```javascript
 // Returns an array with the latest log messages (depending on the config.
-var logArchive = semlog.getLogHistory();
+const logArchive = semlog.getLogHistory();
 
 // Get current logger config
-var config = semlog.getConfig();
+const config = semlog.getConfig();
 
 // Change default options:
 // This will only update the option that are actually given
@@ -66,16 +66,9 @@ semlog.updateConfig({
 ### Helper Functions and more examples
 semlog has some built in helper functions like returning nicely formatted dates.
 
-For a complete API Doc, please view the [API docs](https://cdn.rawgit.com/Fannon/semlog/master/doc/).
+For a complete API Doc, please view the [API docs](API.md).
 
-More example can be found in the [unit test](https://github.com/Fannon/semlog/blob/master/test/test.spec.js) file.
+More examples can be found in the [unit test](https://github.com/gesinn-it-pub/semlog/blob/master/test/test.spec.js) file.
 
 ## License
 MIT © [Simon Heimler](http://www.fannon.de)
-
-[npm-image]: https://badge.fury.io/js/semlog.svg
-[npm-url]: https://npmjs.org/package/semlog
-[travis-image]: https://travis-ci.org/Fannon/semlog.svg?branch=master
-[travis-url]: https://travis-ci.org/Fannon/semlog
-[daviddm-image]: https://david-dm.org/Fannon/semlog.svg?theme=shields.io
-[daviddm-url]: https://david-dm.org/Fannon/semlog
