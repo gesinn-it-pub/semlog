@@ -16,16 +16,17 @@ jobs:
     strategy:
       matrix:
         include:
-          - node: 20
           - node: 22
+          - node: 24
+          - node: 26
             coverage: true
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node }}
 
@@ -47,7 +48,7 @@ jobs:
         if: matrix.coverage == true
 
       - name: Upload code coverage
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v7
         with:
           files: coverage/clover.xml
           token: ${{ secrets.CODECOV_TOKEN }}
