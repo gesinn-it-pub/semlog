@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](https://semver.org/) and
 
 ## [Unreleased]
 
+### Changed
+- **BREAKING:** Raise minimum supported Node.js version from 20 to 22; CI now tests only active LTS lines (22, 24, 26) [`98ab58b`](https://github.com/gesinn-it-pub/semlog/commit/98ab58b)
+- Bump `actions/checkout`, `actions/setup-node`, and `codecov/codecov-action` to v7 [`98ab58b`](https://github.com/gesinn-it-pub/semlog/commit/98ab58b)
+
 ## [0.8.0] - 2026-07-26
 
 Adds a coverage report to CI and closes out a set of open dependency vulnerabilities.
