@@ -1,5 +1,6 @@
 [![npm version](https://img.shields.io/npm/v/semlog.svg?style=flat)](https://www.npmjs.com/package/semlog)
 [![CI](https://github.com/gesinn-it-pub/semlog/actions/workflows/ci.yml/badge.svg)](https://github.com/gesinn-it-pub/semlog/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/github/gesinn-it-pub/semlog/branch/master/graph/badge.svg)](https://codecov.io/github/gesinn-it-pub/semlog)
 > A semantic logger module, that colors / formats automatically
 
 ## About
