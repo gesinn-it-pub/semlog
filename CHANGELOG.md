@@ -6,19 +6,21 @@ This project adheres to [Semantic Versioning](https://semver.org/) and
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-07-26
+
+Raises the minimum supported Node.js version and moves CI to only test active LTS lines.
+
+### Breaking Changes
+- Raise minimum supported Node.js version from 20 to 22 [`98ab58b`](https://github.com/gesinn-it-pub/semlog/commit/98ab58b)
+
 ### Changed
-- **BREAKING:** Raise minimum supported Node.js version from 20 to 22; CI now tests only active LTS lines (22, 24, 26) [`98ab58b`](https://github.com/gesinn-it-pub/semlog/commit/98ab58b)
+- CI now tests only active Node.js LTS lines (22, 24) [`98ab58b`](https://github.com/gesinn-it-pub/semlog/commit/98ab58b)
 - Bump `actions/checkout`, `actions/setup-node`, and `codecov/codecov-action` to v7 [`98ab58b`](https://github.com/gesinn-it-pub/semlog/commit/98ab58b)
 
-## [0.8.0] - 2026-07-26
+### Fixed
+- Drop Node 26 from the CI matrix; c8 (via yargs) crashes on Node >=25.7 with an unresolved upstream bug (bcoe/c8#582) [`a8e8c6c`](https://github.com/gesinn-it-pub/semlog/commit/a8e8c6c)
 
-Adds a coverage report to CI and closes out a set of open dependency vulnerabilities.
+[Unreleased]: https://github.com/gesinn-it-pub/semlog/compare/1.0.0...HEAD
+[1.0.0]: https://github.com/gesinn-it-pub/semlog/compare/0.8.0...1.0.0
 
-### Added
-- Add `format` npm script for auto-formatting with Prettier [`dbffe72`](https://github.com/gesinn-it-pub/semlog/commit/dbffe724b95dae9870e5114ed272c5df34ee7998)
-
-### Changed
-- Bump mocha to 11.7.6 and override vulnerable transitive deps (brace-expansion, diff, js-yaml, serialize-javascript) [`39d2837`](https://github.com/gesinn-it-pub/semlog/commit/39d28378b0a21e5a9963392163961aa40b0ba68f)
-
-[Unreleased]: https://github.com/gesinn-it-pub/semlog/compare/0.8.0...HEAD
-[0.8.0]: https://github.com/gesinn-it-pub/semlog/compare/v0.6.11...0.8.0
+Older releases: [0.x](CHANGELOG-0.x.md)
