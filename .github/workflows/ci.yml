@@ -17,8 +17,10 @@ jobs:
       matrix:
         include:
           - node: 22
+          # Node 26 omitted: c8 (via yargs@17) crashes under Node >=25.7 with
+          # "require is not defined in ES module scope" (bcoe/c8#582). Add
+          # 26 back once that upstream issue is fixed.
           - node: 24
-          - node: 26
             coverage: true
 
     steps:
