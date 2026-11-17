@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/) and
 
 ## [Unreleased]
 
+### Fixed
+- Update `brace-expansion` and `js-yaml` to patched versions, resolving two high-severity denial-of-service advisories in development dependencies [`5a0524a`](https://github.com/gesinn-it-pub/semlog/commit/5a0524a)
+
 ## [1.0.0] - 2026-07-26
 
 Raises the minimum supported Node.js version and moves CI to only test active LTS lines.
