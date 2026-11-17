@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](https://semver.org/) and
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-11-17
+
+Security maintenance release.
+
 ### Fixed
 - Update `brace-expansion` and `js-yaml` to patched versions, resolving two high-severity denial-of-service advisories in development dependencies [`5a0524a`](https://github.com/gesinn-it-pub/semlog/commit/5a0524a)
 
@@ -23,7 +27,8 @@ Raises the minimum supported Node.js version and moves CI to only test active LT
 ### Fixed
 - Drop Node 26 from the CI matrix; c8 (via yargs) crashes on Node >=25.7 with an unresolved upstream bug (bcoe/c8#582) [`a8e8c6c`](https://github.com/gesinn-it-pub/semlog/commit/a8e8c6c)
 
-[Unreleased]: https://github.com/gesinn-it-pub/semlog/compare/1.0.0...HEAD
+[Unreleased]: https://github.com/gesinn-it-pub/semlog/compare/1.0.1...HEAD
+[1.0.1]: https://github.com/gesinn-it-pub/semlog/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/gesinn-it-pub/semlog/compare/0.8.0...1.0.0
 
 Older releases: [0.x](CHANGELOG-0.x.md)
