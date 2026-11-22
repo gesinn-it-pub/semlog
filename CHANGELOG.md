@@ -16,6 +16,7 @@ This project adheres to [Semantic Versioning](https://semver.org/) and
 - `debug()` and `error()` no longer throw for circular objects, BigInt values, `null` or non-Error arguments
 - `error()` prints to stderr only and no longer repeats an empty `{}` dump
 - `debug()` respects `printDebug` and counts in `statistics.debug`, consistent with `message()`
+- Config options that are missing in state shared by an older copy of semlog are filled with their defaults
 
 ### Changed
 - Update `chalk` to v6, which is re-exported as `chalk`

@@ -16,20 +16,23 @@ import prettyjson from 'prettyjson';
 // Variables                            //
 //////////////////////////////////////////
 
+const DEFAULT_CONFIG = {
+    silent: false,
+    colorize: true,
+    printYaml: false,
+    logDateTime: true,
+    printTime: true,
+    printDateTime: false,
+    printDebug: true,
+    printVerbose: true,
+    historySize: 2048, // 0 for none
+};
+
+// The state lives on the global object, so several copies of this module share one history and config
 if (!global.githubFannonSemlog) {
     global.githubFannonSemlog = {
         history: [],
-        config: {
-            silent: false,
-            colorize: true,
-            printYaml: false,
-            logDateTime: true,
-            printTime: true,
-            printDateTime: false,
-            printDebug: true,
-            printVerbose: true,
-            historySize: 2048, // 0 for none
-        },
+        config: {},
         statistics: {
             debug: 0,
             warning: 0,
@@ -38,6 +41,9 @@ if (!global.githubFannonSemlog) {
         },
     };
 }
+
+// Fill in options that an older copy of this module, which created the state first, did not know about
+global.githubFannonSemlog.config = { ...DEFAULT_CONFIG, ...global.githubFannonSemlog.config };
 
 /** Publicly export the chalk color library */
 export { chalk };

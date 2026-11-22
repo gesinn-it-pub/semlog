@@ -411,3 +411,24 @@ describe('semlog console output', function () {
         expect(out[0]).to.match(/^\[\d\d:\d\d:\d\d\] \[i\] timed$/);
     });
 });
+
+describe('semlog shared state', function () {
+    it('fills missing config options when state from another copy exists', async function () {
+        const original = global.githubFannonSemlog;
+        try {
+            global.githubFannonSemlog = {
+                history: [],
+                config: { silent: true, colorize: false },
+                statistics: { debug: 0, warning: 0, error: 0, total: 0 },
+            };
+            const fresh = await import('../index.js?shared-state');
+            const config = fresh.getConfig();
+            expect(config.silent).to.equal(true);
+            expect(config.colorize).to.equal(false);
+            expect(config.historySize).to.equal(2048);
+            expect(config.printDebug).to.equal(true);
+        } finally {
+            global.githubFannonSemlog = original;
+        }
+    });
+});
