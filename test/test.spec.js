@@ -382,4 +382,32 @@ describe('semlog console output', function () {
         log({ a: 1 }, true);
         expect(semlog.getStatistics().debug).to.equal(1);
     });
+
+    it('suppresses verbose and debug strings without printing', function () {
+        semlog.updateConfig({ printVerbose: false, printDebug: false });
+        log('[V] verbose');
+        log('[D] debug');
+        expect(out).to.have.length(0);
+        expect(semlog.getLogHistory()).to.have.length(2);
+        expect(semlog.getStatistics().debug).to.equal(2);
+    });
+
+    it('derives statistics from the stringified message', function () {
+        log('[i] ok', true);
+        semlog.message(['[E]'], true);
+        expect(semlog.getStatistics().error).to.equal(1);
+        expect(semlog.getStatistics().total).to.equal(2);
+    });
+
+    it('colors by indicator and leaves unknown messages untouched', function () {
+        expect(semlog.colorize('plain')).to.equal('plain');
+        expect(semlog.colorize(5)).to.equal(5);
+        expect(semlog.colorize('[E] x')).to.include('[E] x');
+    });
+
+    it('prefixes messages with the time unless disabled', function () {
+        semlog.updateConfig({ printTime: true });
+        log('[i] timed');
+        expect(out[0]).to.match(/^\[\d\d:\d\d:\d\d\] \[i\] timed$/);
+    });
 });

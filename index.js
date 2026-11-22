@@ -65,17 +65,8 @@ export function log(obj, silent) {
 }
 
 export function message(msg, silent) {
-    global.githubFannonSemlog.statistics.total += 1;
-    if (msg && msg.indexOf && (msg.indexOf('[V]') >= 0 || msg.indexOf('[D]') >= 0)) {
-        global.githubFannonSemlog.statistics.debug += 1;
-    } else if (msg && msg.indexOf && msg.indexOf('[W]') >= 0) {
-        global.githubFannonSemlog.statistics.warning += 1;
-    } else if (msg && msg.indexOf && msg.indexOf('[E]') >= 0) {
-        global.githubFannonSemlog.statistics.error += 1;
-    }
-
-    const config = global.githubFannonSemlog.config;
-    silent = silent || config.silent;
+    const state = global.githubFannonSemlog;
+    const config = state.config;
 
     if (typeof msg !== 'string') {
         try {
@@ -85,27 +76,35 @@ export function message(msg, silent) {
         }
     }
 
+    // Statistics are derived from the final string, so non-string values (e.g. arrays) cannot be misdetected
+    state.statistics.total += 1;
+    const isVerbose = msg.includes('[V]');
+    const isDebug = msg.includes('[D]');
+    if (isVerbose || isDebug) {
+        state.statistics.debug += 1;
+    } else if (msg.includes('[W]')) {
+        state.statistics.warning += 1;
+    } else if (msg.includes('[E]')) {
+        state.statistics.error += 1;
+    }
+
     addToHistory(msg);
 
-    if (!silent) {
-        if (config.colorize) {
-            msg = colorize(msg);
-        }
-
-        if ((config.printTime || config.printDateTime) && msg.trim().length > 0) {
-            if (config.printDateTime) {
-                msg = chalk.gray('[' + humanDate() + '] ') + msg;
-            } else {
-                msg = chalk.gray('[' + humanTime() + '] ') + msg;
-            }
-        }
-
-        const suppress =
-            (!config.printVerbose && msg.indexOf('[V]') >= 0) || (!config.printDebug && msg.indexOf('[D]') >= 0);
-        if (!suppress) {
-            console.log(msg);
-        }
+    // Decide before formatting, so suppressed messages cost nothing and the time prefix cannot interfere
+    if (silent || config.silent || (isVerbose && !config.printVerbose) || (isDebug && !config.printDebug)) {
+        return;
     }
+
+    if (config.colorize) {
+        msg = colorize(msg);
+    }
+
+    if ((config.printTime || config.printDateTime) && msg.trim().length > 0) {
+        const time = config.printDateTime ? humanDate() : humanTime();
+        msg = chalk.gray('[' + time + '] ') + msg;
+    }
+
+    console.log(msg);
 }
 
 /**
@@ -242,6 +241,25 @@ export function addToHistory(obj) {
     }
 }
 
+/** Indicator strings and their colors, in order of precedence */
+const COLOR_MAP = [
+    ['[E]', 'red'], // ERROR
+    ['[W]', 'yellow'], // WARNING
+    ['[?]', 'yellow'], // MISSING
+    ['[S]', 'green'], // SUCCESS
+    ['[i]', 'blue'], // INFO
+    ['[+]', 'green'], // ADDED
+    ['[-]', 'red'], // REMOVED
+    ['[C]', 'cyan'], // CHANGED
+    ['[U]', 'grey'], // UNCHANGED
+    ['[=]', 'grey'], // EQUAL
+    ['[/]', 'grey'], // SKIPPED
+    ['[V]', 'magenta'], // VERBOSE
+    ['[D]', 'magenta'], // DEBUG
+    ['[T]', 'magenta'], // TO-DO
+    ['[TODO]', 'magenta'], // TO-DO
+];
+
 /**
  * Colors the messages by searching for specific indicator strings
  * TODO: Allow to add to the colorMap
@@ -250,26 +268,12 @@ export function addToHistory(obj) {
  * @returns {string}
  */
 export function colorize(msg) {
-    const colorMap = {
-        '[E]': 'red', // ERROR
-        '[W]': 'yellow', // WARNING
-        '[?]': 'yellow', // MISSING
-        '[S]': 'green', // SUCCESS
-        '[i]': 'blue', // INFO
-        '[+]': 'green', // ADDED
-        '[-]': 'red', // REMOVED
-        '[C]': 'cyan', // CHANGED
-        '[U]': 'grey', // UNCHANGED
-        '[=]': 'grey', // EQUAL
-        '[/]': 'grey', // SKIPPED
-        '[V]': 'magenta', // VERBOSE
-        '[D]': 'magenta', // DEBUG
-        '[T]': 'magenta', // TO-DO
-        '[TODO]': 'magenta', // TO-DO
-    };
+    if (typeof msg !== 'string') {
+        return msg;
+    }
 
-    for (const [searchString, color] of Object.entries(colorMap)) {
-        if (msg && msg.indexOf && msg.indexOf(searchString) > -1) {
+    for (const [searchString, color] of COLOR_MAP) {
+        if (msg.includes(searchString)) {
             return chalk[color](msg);
         }
     }
