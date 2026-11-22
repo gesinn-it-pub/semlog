@@ -57,8 +57,8 @@ export { chalk };
  *
  * Writes Logs to console, stringifies objects first
  *
- * @param {string|object}   msg     Message String or Object
- * @param {boolean}         [silent]  Dot not print message to the console, but stores it to the log history.
+ * @param {*}               obj       Message string, object or Error; Errors go to error(), objects to debug()
+ * @param {boolean}         [silent]  Do not print message to the console, but store it in the log history.
  */
 export function log(obj, silent) {
     if (obj && obj instanceof Error) {
@@ -70,6 +70,12 @@ export function log(obj, silent) {
     }
 }
 
+/**
+ * Prints a message, colored by its indicator string (e.g. `[E]`, `[W]`), and counts it in the statistics
+ *
+ * @param {*}               msg       Message string; other values are stringified as JSON
+ * @param {boolean}         [silent]  Do not print message to the console, but store it in the log history.
+ */
 export function message(msg, silent) {
     const state = global.githubFannonSemlog;
     const config = state.config;
@@ -299,7 +305,7 @@ export function getConfig() {
 }
 
 /**
- * Gets the current config
+ * Gets the log statistics (counts of debug, warning, error and total messages)
  */
 export function getStatistics() {
     return global.githubFannonSemlog.statistics;
@@ -317,7 +323,7 @@ export function updateConfig(config) {
 }
 
 /**
- * Clears (empties) the log object
+ * Clears the log history and resets the statistics
  */
 export function clearLogHistory() {
     const state = global.githubFannonSemlog;
@@ -391,6 +397,8 @@ export function stripTrailingSlash(url) {
 /**
  * Returns the byte length of an utf8 string or an object (when parsed to JSON)
  *
+ * @param {*} obj
+ * @returns {number}
  */
 export function byteSize(obj) {
     const str = typeof obj === 'object' ? JSON.stringify(obj) : String(obj);
