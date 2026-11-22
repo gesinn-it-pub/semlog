@@ -9,6 +9,10 @@ This project adheres to [Semantic Versioning](https://semver.org/) and
 ### Breaking Changes
 - semlog is now an ES module (`"type": "module"`, named exports). `import { log } from 'semlog'` and `import * as semlog from 'semlog'` work; CommonJS `require('semlog')` keeps working on Node.js 22.12 or newer
 
+### Fixed
+- `historySize: 0` now really disables the history instead of letting it grow without limit; the history also shrinks when `historySize` is lowered at runtime
+- The history stores strings without JSON quotes and keeps message and stack of errors instead of `{}`
+
 ### Changed
 - Update `chalk` to v6, which is re-exported as `chalk`
 - Raise minimum supported Node.js version to 22.12, required by `chalk` 6 and the test dependencies (`chai` 6, `mocha` 12)

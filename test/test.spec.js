@@ -244,3 +244,51 @@ describe('semlog utilities', function () {
         expect(semlog.byteSize('\uD840\uDC00')).to.equal(4); // 4-byte UTF-8 surrogate pair (𠀀)
     });
 });
+
+describe('semlog history', function () {
+    let originalConfig;
+
+    beforeEach(function () {
+        originalConfig = { ...semlog.getConfig() };
+        semlog.clearLogHistory();
+    });
+
+    afterEach(function () {
+        semlog.updateConfig(originalConfig);
+        semlog.clearLogHistory();
+    });
+
+    it('stores nothing when historySize is 0', function () {
+        semlog.updateConfig({ historySize: 0 });
+        log('[i] first', true);
+        log({ a: 1 }, true);
+        expect(semlog.getLogHistory()).to.have.length(0);
+    });
+
+    it('shrinks the history when historySize is lowered', function () {
+        semlog.updateConfig({ historySize: 10 });
+        for (let i = 0; i < 10; i++) {
+            log('[i] entry ' + i, true);
+        }
+        semlog.updateConfig({ historySize: 3 });
+        log('[i] entry 10', true);
+        const history = semlog.getLogHistory();
+        expect(history).to.have.length(3);
+        expect(history[2]).to.include('entry 10');
+    });
+
+    it('stores strings without JSON quotes', function () {
+        semlog.updateConfig({ logDateTime: false });
+        log('[i] plain', true);
+        expect(semlog.getLogHistory()).to.deep.equal(['[i] plain']);
+    });
+
+    it('stores error details and undefined values', function () {
+        semlog.updateConfig({ logDateTime: false });
+        semlog.addToHistory(new Error('boom'));
+        semlog.addToHistory(undefined);
+        const history = semlog.getLogHistory();
+        expect(history[0]).to.include('boom');
+        expect(history[1]).to.equal('undefined');
+    });
+});

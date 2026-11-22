@@ -164,18 +164,38 @@ export function error(obj, silent) {
     }
 }
 
+/**
+ * Converts any value into the string that is stored in the history
+ *
+ * @param {*} obj
+ * @returns {string}
+ */
+function serializeForHistory(obj) {
+    if (typeof obj === 'string') {
+        return obj;
+    }
+    if (obj instanceof Error) {
+        return obj.stack || obj.name + ': ' + obj.message;
+    }
+    const json = JSON.stringify(obj, null, 4);
+    return json === undefined ? String(obj) : json;
+}
+
+/**
+ * Adds an entry to the log history, respecting `historySize` (0 disables the history)
+ *
+ * @param {*} obj
+ */
 export function addToHistory(obj) {
-    const config = global.githubFannonSemlog.config;
+    const { config, history } = global.githubFannonSemlog;
+
+    if (!(config.historySize > 0)) {
+        return;
+    }
+
     let msg;
-
     try {
-        msg = JSON.stringify(obj, null, 4);
-
-        // Check that the message history size doesn't get to big
-        if (config.historySize && global.githubFannonSemlog.history.length >= config.historySize) {
-            global.githubFannonSemlog.history.shift();
-        }
-
+        msg = serializeForHistory(obj);
         if (config.logDateTime) {
             msg = '[' + humanDate() + '] ' + msg;
         }
@@ -183,7 +203,12 @@ export function addToHistory(obj) {
         msg = '[W] Internal semlog error: Could not push circular/invalid object into the history';
     }
 
-    global.githubFannonSemlog.history.push(msg);
+    history.push(msg);
+
+    // Also shrinks the history if historySize was lowered at runtime
+    if (history.length > config.historySize) {
+        history.splice(0, history.length - config.historySize);
+    }
 }
 
 /**
