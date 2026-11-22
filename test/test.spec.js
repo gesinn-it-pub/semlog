@@ -54,6 +54,8 @@ describe('semlog logger', function () {
 
         console.log('-------------------------------------------------------------');
         console.log('');
+
+        expect(semlog.getLogHistory().length).to.be.least(20);
     });
 
     it('prints objects as colorized YAML', function () {
