@@ -304,3 +304,82 @@ describe('semlog history', function () {
         expect(semlog.getStatistics()).to.equal(statistics);
     });
 });
+
+describe('semlog console output', function () {
+    let originalConfig;
+    let out;
+    let errOut;
+    let origLog;
+    let origError;
+
+    beforeEach(function () {
+        originalConfig = { ...semlog.getConfig() };
+        semlog.updateConfig({ colorize: false, printTime: false, printDateTime: false });
+        semlog.clearLogHistory();
+        out = [];
+        errOut = [];
+        origLog = console.log;
+        origError = console.error;
+        console.log = (...args) => out.push(args.join(' '));
+        console.error = (...args) => errOut.push(args.join(' '));
+    });
+
+    afterEach(function () {
+        console.log = origLog;
+        console.error = origError;
+        semlog.updateConfig(originalConfig);
+        semlog.clearLogHistory();
+    });
+
+    it('does not throw when debugging circular objects', function () {
+        const circular = {};
+        circular.self = circular;
+        expect(() => semlog.debug(circular)).to.not.throw();
+        expect(out).to.have.length(1);
+        expect(() => {
+            semlog.updateConfig({ printYaml: true });
+            semlog.debug(circular);
+        }).to.not.throw();
+    });
+
+    it('does not throw when debugging BigInt values', function () {
+        expect(() => semlog.debug({ n: 1n })).to.not.throw();
+    });
+
+    it('does not throw for non-Error values passed to error()', function () {
+        expect(() => semlog.error(null)).to.not.throw();
+        expect(() => semlog.error(undefined)).to.not.throw();
+        semlog.error('plain text');
+        expect(errOut.join('\n')).to.include('[E] plain text');
+        const circular = {};
+        circular.self = circular;
+        expect(() => semlog.error(circular)).to.not.throw();
+    });
+
+    it('prints errors with message and stack to stderr only', function () {
+        semlog.error(new Error('boom'));
+        expect(out).to.have.length(0);
+        expect(errOut[0]).to.equal('[E] boom');
+        expect(errOut.join('\n')).to.include('Error: boom');
+        expect(errOut.join('\n')).to.not.include('{}');
+    });
+
+    it('prints additional error properties', function () {
+        const err = new Error('boom');
+        err.code = 'E_TEST';
+        semlog.error(err);
+        expect(errOut.join('\n')).to.include('E_TEST');
+    });
+
+    it('suppresses debug objects when printDebug is false', function () {
+        semlog.updateConfig({ printDebug: false });
+        log({ a: 1 });
+        expect(out).to.have.length(0);
+        expect(semlog.getLogHistory()).to.have.length(1);
+    });
+
+    it('counts debug() calls in the statistics', function () {
+        log({ a: 1 }, true);
+        expect(semlog.getStatistics().debug).to.equal(1);
+    });
+});

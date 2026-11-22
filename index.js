@@ -109,58 +109,89 @@ export function message(msg, silent) {
 }
 
 /**
+ * Stringifies a value for output without ever throwing
+ *
+ * @param {*} obj
+ * @param {number} [space]  Indentation
+ * @returns {string}
+ */
+function safeStringify(obj, space) {
+    try {
+        const json = JSON.stringify(obj, null, space);
+        return json === undefined ? String(obj) : json;
+    } catch {
+        return '[E] [SEMLOG] Could not stringify given parameter';
+    }
+}
+
+/**
  * Prints out debugging information for the current model object
  *
- * @param {object}        obj     Object
+ * @param {object}        obj       Object
+ * @param {boolean}       [silent]  Do not print to the console, but store in the history
  */
 export function debug(obj, silent) {
-    global.githubFannonSemlog.statistics.total += 1;
-
-    const config = global.githubFannonSemlog.config;
-    silent = silent || config.silent;
+    const state = global.githubFannonSemlog;
+    const config = state.config;
+    state.statistics.total += 1;
+    state.statistics.debug += 1;
     addToHistory(obj);
 
-    if (!silent) {
-        if (global.githubFannonSemlog.config.printYaml) {
-            // Print YAML
-            const options = {
-                keysColor: 'white',
-                dashColor: 'white',
-                stringColor: 'yellow',
-                numberColor: 'blue',
-            };
+    if (silent || config.silent || !config.printDebug) {
+        return;
+    }
 
-            if (!global.githubFannonSemlog.config.colorize) {
-                options.noColor = true;
-            }
+    if (config.printYaml) {
+        const options = {
+            keysColor: 'white',
+            dashColor: 'white',
+            stringColor: 'yellow',
+            numberColor: 'blue',
+        };
+
+        if (!config.colorize) {
+            options.noColor = true;
+        }
+
+        try {
             console.log(chalk.gray('---\n') + prettyjson.render(obj, options));
-        } else {
-            // Print indented JSON
-            const msg = JSON.stringify(obj, false, 4);
-            console.log(chalk.gray(msg));
+            return;
+        } catch {
+            // Fall through to the JSON output, e.g. for circular objects
         }
     }
+
+    console.log(chalk.gray(safeStringify(obj, 4)));
 }
 
 /**
  * Prints errors
  *
- * @param {object}        obj     Object
+ * @param {Error|object|string} obj       Error (or any value) to print
+ * @param {boolean}             [silent]  Do not print to the console, but store in the history
  */
 export function error(obj, silent) {
-    global.githubFannonSemlog.statistics.total += 1;
-    global.githubFannonSemlog.statistics.error += 1;
-
-    const config = global.githubFannonSemlog.config;
-    silent = silent || config.silent;
+    const state = global.githubFannonSemlog;
+    state.statistics.total += 1;
+    state.statistics.error += 1;
     addToHistory(obj);
 
-    if (!silent) {
-        console.error(chalk.red('[E] ' + obj.message));
-        console.log(chalk.gray(JSON.stringify(obj, null, 4)));
-        if (obj.stack) {
-            console.log(chalk.gray(obj.stack));
+    if (silent || state.config.silent) {
+        return;
+    }
+
+    const hasMessage = obj !== null && typeof obj === 'object' && obj.message !== undefined;
+    console.error(chalk.red('[E] ' + (hasMessage ? obj.message : typeof obj === 'string' ? obj : safeStringify(obj))));
+
+    if (hasMessage) {
+        // Message and stack of an Error are not enumerable, so only additional properties show up here
+        const details = safeStringify(obj, 4);
+        if (details !== '{}') {
+            console.error(chalk.gray(details));
         }
+    }
+    if (obj && obj.stack) {
+        console.error(chalk.gray(obj.stack));
     }
 }
 
