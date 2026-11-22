@@ -487,3 +487,21 @@ describe('semlog byteSize and pad edge cases', function () {
         expect(semlog.pad(12345, 2)).to.equal('12345');
     });
 });
+
+describe('semlog config validation', function () {
+    it('rejects unknown options and wrong types without changing anything', function () {
+        const before = { ...semlog.getConfig() };
+        expect(() => semlog.updateConfig({ colorise: true })).to.throw(TypeError, 'colorise');
+        expect(() => semlog.updateConfig({ silent: 'yes' })).to.throw(TypeError, 'silent');
+        expect(() => semlog.updateConfig({ historySize: -1 })).to.throw(TypeError, 'historySize');
+        expect(() => semlog.updateConfig({ historySize: 1.5 })).to.throw(TypeError, 'historySize');
+        expect(() => semlog.updateConfig({ printTime: !before.printTime, historySize: 'x' })).to.throw(TypeError);
+        expect(semlog.getConfig()).to.deep.equal(before);
+    });
+
+    it('accepts valid options', function () {
+        const before = { ...semlog.getConfig() };
+        expect(semlog.updateConfig({ historySize: 0 }).historySize).to.equal(0);
+        semlog.updateConfig(before);
+    });
+});

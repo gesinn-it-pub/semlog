@@ -338,11 +338,25 @@ export function getStatistics() {
 
 /**
  * Updates the config.
- * Only those parameters that have been given will be updated
+ * Only those parameters that have been given will be updated. Unknown options and values of the wrong type
+ * are rejected with a TypeError, in which case nothing is changed.
  *
  * @param {object} config
+ * @returns {object} The updated config
  */
 export function updateConfig(config) {
+    for (const [key, value] of Object.entries(config)) {
+        if (!(key in DEFAULT_CONFIG)) {
+            throw new TypeError('Unknown semlog config option: ' + key);
+        }
+        if (key === 'historySize') {
+            if (!Number.isInteger(value) || value < 0) {
+                throw new TypeError('Config option historySize must be a non-negative integer');
+            }
+        } else if (typeof value !== 'boolean') {
+            throw new TypeError('Config option ' + key + ' must be a boolean');
+        }
+    }
     Object.assign(global.githubFannonSemlog.config, config);
     return global.githubFannonSemlog.config;
 }

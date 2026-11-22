@@ -10,6 +10,8 @@ This project adheres to [Semantic Versioning](https://semver.org/) and
 - semlog is now an ES module (`"type": "module"`, named exports). `import { log } from 'semlog'` and `import * as semlog from 'semlog'` work; CommonJS `require('semlog')` keeps working on Node.js 22.12 or newer
 - Indicator strings such as `[E]` are now only recognized at the start of a message (leading whitespace is ignored). Messages that merely contain them, e.g. `array[D]`, are no longer colored, counted or suppressed
 
+- `updateConfig()` throws a `TypeError` for unknown options and values of the wrong type instead of silently accepting them
+
 ### Added
 - `addMarker(marker, color)` registers custom indicator strings
 
