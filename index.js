@@ -351,7 +351,7 @@ export function pad(number, digits) {
 }
 
 /**
- * Adds dots as thousand separators to numbers
+ * Adds dots as thousand separators to numbers; a decimal fraction is separated by a comma
  *
  * http://stackoverflow.com/a/2901298
  *
@@ -359,7 +359,9 @@ export function pad(number, digits) {
  * @returns {string}
  */
 export function prettyNumber(number) {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    const [integer, fraction] = number.toString().split('.');
+    const grouped = integer.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    return fraction === undefined ? grouped : grouped + ',' + fraction;
 }
 
 /**
@@ -425,7 +427,7 @@ export function byteSize(obj) {
  */
 export function prettyBytes(bytes, si) {
     const thresh = si ? 1000 : 1024;
-    if (bytes < thresh) {
+    if (Math.abs(bytes) < thresh) {
         return bytes + ' B';
     }
     const units = si
@@ -435,7 +437,8 @@ export function prettyBytes(bytes, si) {
     do {
         bytes /= thresh;
         ++u;
-    } while (bytes >= thresh);
+        // Compare the rounded value, so 1023.96 KiB becomes 1.0 MiB instead of 1024.0 KiB
+    } while (Math.abs(Number(bytes.toFixed(1))) >= thresh && u < units.length - 1);
     return bytes.toFixed(1) + ' ' + units[u];
 }
 

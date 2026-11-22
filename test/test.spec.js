@@ -442,3 +442,17 @@ describe('semlog URL helpers', function () {
         expect(semlog.stripTrailingSlash('')).to.equal('');
     });
 });
+
+describe('semlog number formatting edge cases', function () {
+    it('formats bytes at unit boundaries and beyond the largest unit', function () {
+        expect(semlog.prettyBytes(1024 * 1023.96)).to.equal('1.0 MiB');
+        expect(semlog.prettyBytes(-2048)).to.equal('-2.0 KiB');
+        expect(semlog.prettyBytes(-5)).to.equal('-5 B');
+        expect(semlog.prettyBytes(1024 ** 9)).to.equal('1024.0 YiB');
+    });
+
+    it('does not group the fraction of decimal numbers', function () {
+        expect(semlog.prettyNumber(1234.5678)).to.equal('1.234,5678');
+        expect(semlog.prettyNumber(1234567)).to.equal('1.234.567');
+    });
+});

@@ -18,6 +18,7 @@ This project adheres to [Semantic Versioning](https://semver.org/) and
 - `debug()` respects `printDebug` and counts in `statistics.debug`, consistent with `message()`
 - Config options that are missing in state shared by an older copy of semlog are filled with their defaults
 - `cleanUrl()` and `stripTrailingSlash()` remove repeated slashes, as documented, instead of only one
+- `prettyBytes()` no longer prints values like `1024.0 KiB` or `undefined` units and handles negative values; `prettyNumber()` no longer groups the digits after the decimal point
 
 ### Changed
 - Update `chalk` to v6, which is re-exported as `chalk`
