@@ -16,6 +16,7 @@ This project adheres to [Semantic Versioning](https://semver.org/) and
 
 ### Added
 - `addMarker(marker, color)` registers custom indicator strings
+- TypeScript type declarations for `semlog` and `semlog/utils`
 
 ### Fixed
 - `historySize: 0` now really disables the history instead of letting it grow without limit; the history also shrinks when `historySize` is lowered at runtime

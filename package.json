@@ -25,9 +25,16 @@
   "license": "MIT",
   "type": "module",
   "main": "index.js",
+  "types": "index.d.ts",
   "exports": {
-    ".": "./index.js",
-    "./utils": "./utils.js"
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    },
+    "./utils": {
+      "types": "./utils.d.ts",
+      "default": "./utils.js"
+    }
   },
   "engines": {
     "node": ">=22.12.0"

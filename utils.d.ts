@@ -1,0 +1,11 @@
+export function pad(number: number | string, digits: number): string;
+export function prettyNumber(number: number): string;
+export function cleanUrl(url: string): string;
+export function stripTrailingSlash(url: string): string;
+export function byteSize(obj: unknown): number;
+export function prettyBytes(bytes: number, si?: boolean): string;
+export function getDateArray(date?: Date): [number, string, string, string, string, string, string];
+export function humanDate(date?: Date): string;
+export function roboDate(date?: Date): string;
+export function humanTime(date?: Date): string;
+export function roboTime(date?: Date): string;
