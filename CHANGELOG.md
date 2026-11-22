@@ -21,6 +21,8 @@ This project adheres to [Semantic Versioning](https://semver.org/) and
 - `prettyBytes()` no longer prints values like `1024.0 KiB` or `undefined` units and handles negative values; `prettyNumber()` no longer groups the digits after the decimal point
 
 ### Changed
+- Build the color map once and decide about suppressed messages before formatting them
+- Use `padStart` and `Buffer.byteLength` in `pad()` and `byteSize()`; `byteSize(undefined)` no longer throws
 - Update `chalk` to v6, which is re-exported as `chalk`
 - Raise minimum supported Node.js version to 22.12, required by `chalk` 6 and the test dependencies (`chai` 6, `mocha` 12)
 
