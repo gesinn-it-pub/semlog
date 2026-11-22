@@ -291,4 +291,16 @@ describe('semlog history', function () {
         expect(history[0]).to.include('boom');
         expect(history[1]).to.equal('undefined');
     });
+
+    it('keeps references valid when clearing history and statistics', function () {
+        const history = semlog.getLogHistory();
+        const statistics = semlog.getStatistics();
+        log('[E] something', true);
+        expect(statistics.error).to.equal(1);
+        semlog.clearLogHistory();
+        expect(history).to.have.length(0);
+        expect(statistics.error).to.equal(0);
+        expect(semlog.getLogHistory()).to.equal(history);
+        expect(semlog.getStatistics()).to.equal(statistics);
+    });
 });

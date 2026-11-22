@@ -12,6 +12,7 @@ This project adheres to [Semantic Versioning](https://semver.org/) and
 ### Fixed
 - `historySize: 0` now really disables the history instead of letting it grow without limit; the history also shrinks when `historySize` is lowered at runtime
 - The history stores strings without JSON quotes and keeps message and stack of errors instead of `{}`
+- `clearLogHistory()` resets history and statistics in place, so references obtained earlier via `getLogHistory()` / `getStatistics()` stay valid
 
 ### Changed
 - Update `chalk` to v6, which is re-exported as `chalk`

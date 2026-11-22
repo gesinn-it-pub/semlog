@@ -279,17 +279,14 @@ export function updateConfig(config) {
  * Clears (empties) the log object
  */
 export function clearLogHistory() {
-    global.githubFannonSemlog.history = [];
-    global.githubFannonSemlog.statistics = {
-        debug: 0,
-        warning: 0,
-        error: 0,
-        total: 0,
-    };
+    const state = global.githubFannonSemlog;
+    // Reset in place, so references obtained via getLogHistory() / getStatistics() stay valid
+    state.history.length = 0;
+    Object.assign(state.statistics, { debug: 0, warning: 0, error: 0, total: 0 });
 }
 
 /**
- * Returns the global.moboLogObject
+ * Returns the log history
  *
  * @returns {Array}
  */
