@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/) and
 
 ## [Unreleased]
 
+### Changed
+- Raise minimum supported Node.js version to 22.12, required by the ESM-only test dependencies (`chai` 6, `mocha` 12)
+
 ## [1.0.1] - 2026-11-17
 
 Security maintenance release.
