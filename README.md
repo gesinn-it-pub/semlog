@@ -15,9 +15,6 @@ $ npm install --save semlog
 ```
 
 ## Usage
-### API Documentation
-* [API Documenatation](API.md)
-
 ### Import 
 ```javascript
 import * as semlog from 'semlog';
@@ -49,36 +46,82 @@ log('[C] changed log entry');
 log('[TODO] todo log entry');
 ```
 
-### Logger functions
+### Markers
+A message is colored, counted in the statistics and filtered according to the marker it starts with
+(leading whitespace is ignored). Markers inside a message are ignored.
+
+| Marker | Color | Meaning |
+| --- | --- | --- |
+| `[E]` | red | error |
+| `[W]` | yellow | warning |
+| `[?]` | yellow | missing |
+| `[S]` | green | success |
+| `[i]` | blue | info |
+| `[+]` / `[-]` | green / red | added / removed |
+| `[C]` | cyan | changed |
+| `[U]` / `[=]` / `[/]` | grey | unchanged / equal / skipped |
+| `[V]` / `[D]` | magenta | verbose / debug (hidden by `printVerbose` / `printDebug: false`) |
+| `[T]` / `[TODO]` | magenta | to-do |
+
+Register your own markers with any [chalk](https://github.com/chalk/chalk) color:
+
 ```javascript
-// Returns an array with the latest log messages (depending on the config.
-const logArchive = semlog.getLogHistory();
+semlog.addMarker('[OK]', 'green');
+```
 
-// Get current logger config
-const config = semlog.getConfig();
+### Logger functions
+Types for all functions are shipped in `index.d.ts`.
 
-// Change default options:
-// This will only update the option that are actually given
+| Function | Description |
+| --- | --- |
+| `log(value, silent?)` | Errors go to `error()`, objects and arrays to `debug()`, everything else to `message()`. With `silent` the entry is only stored in the history |
+| `message(value, silent?)` | Prints a string (other values as JSON), colored by its marker |
+| `debug(object, silent?)` | Prints an object as indented JSON, or as YAML with `printYaml` |
+| `error(value, silent?)` | Prints an error with its stack to stderr |
+| `addMarker(marker, color)` | Registers a custom marker, e.g. `[OK]` |
+| `getLogHistory()` | Returns the latest log entries as an array of strings |
+| `clearLogHistory()` | Empties the history and resets the statistics, in place |
+| `getStatistics()` | Returns `{ debug, warning, error, total }` |
+| `getConfig()` | Returns the current config |
+| `updateConfig(options)` | Updates the given options; throws a `TypeError` for unknown options or invalid values |
+
+```javascript
 semlog.updateConfig({
+    silent: false,       // print nothing, only fill the history
     colorize: true,
-    printYaml: false,
-    logDateTime: true,
-    printTime: true,
-    printDateTime: false,
-    historySize: 2048 // 0 for none
+    printYaml: false,    // print objects as YAML instead of JSON
+    logDateTime: true,   // prefix history entries with the date and time
+    printTime: true,     // prefix console output with the time
+    printDateTime: false,// prefix console output with date and time instead
+    printDebug: true,    // show [D] messages and objects
+    printVerbose: true,  // show [V] messages
+    historySize: 2048    // 0 for none
 });
 ```
 
-### Helper Functions and more examples
-semlog ships helper functions for formatting dates, numbers, bytes and URLs in a separate entry point:
+### Helper functions
+Helpers for formatting dates, numbers, bytes and URLs are available as a separate entry point:
 
 ```javascript
 import { humanDate, prettyBytes } from 'semlog/utils';
+
+humanDate();           // 2015-02-10 16:01:12
+prettyBytes(2048);     // 2.0 KiB
 ```
 
-For a complete API Doc, please view the [API docs](API.md).
+| Function | Example |
+| --- | --- |
+| `humanDate(date?)` / `humanTime(date?)` | `2015-02-10 16:01:12` / `16:01:12` |
+| `roboDate(date?)` / `roboTime(date?)` | `2015-02-10_16-00-08` / `16-00-08` |
+| `getDateArray(date?)` | `[year, month, day, hours, minutes, seconds, milliseconds]` |
+| `pad(number, digits)` | `pad(7, 3)` → `007` |
+| `prettyNumber(number)` | `1234567` → `1.234.567` |
+| `prettyBytes(bytes, si?)` | `1024` → `1.0 KiB`, with `si` `1.0 kB` |
+| `byteSize(value)` | UTF-8 byte length of a string or of an object as JSON |
+| `cleanUrl(url)` | `/a/b/` → `a/b` |
+| `stripTrailingSlash(url)` | `http://x.de/` → `http://x.de` |
 
-More examples can be found in the [unit test](https://github.com/gesinn-it-pub/semlog/blob/master/test/test.spec.js) file.
+More examples can be found in the [unit tests](https://github.com/gesinn-it-pub/semlog/blob/master/test).
 
 ## License
 MIT © [Simon Heimler](http://www.fannon.de)
