@@ -432,3 +432,13 @@ describe('semlog shared state', function () {
         }
     });
 });
+
+describe('semlog URL helpers', function () {
+    it('removes repeated slashes as documented', function () {
+        expect(semlog.cleanUrl('//a//')).to.equal('a');
+        expect(semlog.cleanUrl('/a/b/')).to.equal('a/b');
+        expect(semlog.stripTrailingSlash('http://fannon.de//')).to.equal('http://fannon.de');
+        expect(semlog.stripTrailingSlash('http://fannon.de')).to.equal('http://fannon.de');
+        expect(semlog.stripTrailingSlash('')).to.equal('');
+    });
+});

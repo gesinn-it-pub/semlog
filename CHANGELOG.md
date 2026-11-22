@@ -17,6 +17,7 @@ This project adheres to [Semantic Versioning](https://semver.org/) and
 - `error()` prints to stderr only and no longer repeats an empty `{}` dump
 - `debug()` respects `printDebug` and counts in `statistics.debug`, consistent with `message()`
 - Config options that are missing in state shared by an older copy of semlog are filled with their defaults
+- `cleanUrl()` and `stripTrailingSlash()` remove repeated slashes, as documented, instead of only one
 
 ### Changed
 - Update `chalk` to v6, which is re-exported as `chalk`

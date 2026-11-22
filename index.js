@@ -363,32 +363,27 @@ export function prettyNumber(number) {
 }
 
 /**
- * Replace all (/.../g) leading slash (^\/) or (|) trailing slash (\/$) with an empty string.
+ * Removes all leading and trailing slashes and surrounding whitespace
  *
  * @see http://stackoverflow.com/a/3840645
  *
- * @param {String} url URL / Path to cleanup
-
- * @returns {String}
+ * @param {string} url URL / Path to cleanup
+ * @returns {string}
  */
 export function cleanUrl(url) {
-    url = url.trim();
-    return url.replace(/^\/|\/$/g, '');
+    return url.trim().replace(/^\/+|\/+$/g, '');
 }
 
 /**
- * Strips trailing slashes from URL
+ * Strips all trailing slashes from a URL
  *
  * @see http://stackoverflow.com/a/6680858/776425
  *
- * @param {String} url URL to cleanup
- * @returns {String}
+ * @param {string} url URL to cleanup
+ * @returns {string}
  */
 export function stripTrailingSlash(url) {
-    if (url.substr(-1) === '/') {
-        url = url.substr(0, url.length - 1);
-    }
-    return url;
+    return url.replace(/\/+$/, '');
 }
 
 /**
