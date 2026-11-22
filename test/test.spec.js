@@ -456,3 +456,14 @@ describe('semlog number formatting edge cases', function () {
         expect(semlog.prettyNumber(1234567)).to.equal('1.234.567');
     });
 });
+
+describe('semlog byteSize and pad edge cases', function () {
+    it('handles null and undefined', function () {
+        expect(semlog.byteSize(null)).to.equal(4);
+        expect(semlog.byteSize(undefined)).to.equal(9);
+    });
+
+    it('does not truncate numbers longer than the requested digits', function () {
+        expect(semlog.pad(12345, 2)).to.equal('12345');
+    });
+});

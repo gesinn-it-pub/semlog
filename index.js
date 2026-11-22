@@ -347,7 +347,7 @@ export function getLogHistory() {
  * @returns {string}
  */
 export function pad(number, digits) {
-    return new Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
+    return String(number).padStart(digits, '0');
 }
 
 /**
@@ -391,30 +391,10 @@ export function stripTrailingSlash(url) {
 /**
  * Returns the byte length of an utf8 string or an object (when parsed to JSON)
  *
- * @see http://stackoverflow.com/a/23329386
  */
 export function byteSize(obj) {
-    let str;
-
-    if (typeof obj === 'object') {
-        str = JSON.stringify(obj);
-    } else {
-        str = obj.toString();
-    }
-
-    let s = str.length;
-    for (let i = str.length - 1; i >= 0; i--) {
-        const code = str.charCodeAt(i);
-        if (code > 0x7f && code <= 0x7ff) {
-            s++;
-        } else if (code > 0x7ff && code <= 0xffff) {
-            s += 2;
-        }
-        if (code >= 0xdc00 && code <= 0xdfff) {
-            i--;
-        } //trail surrogate
-    }
-    return s;
+    const str = typeof obj === 'object' ? JSON.stringify(obj) : String(obj);
+    return Buffer.byteLength(str, 'utf8');
 }
 
 /**
