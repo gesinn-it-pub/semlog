@@ -394,11 +394,14 @@ describe('semlog console output', function () {
         expect(semlog.getStatistics().debug).to.equal(2);
     });
 
-    it('derives statistics from the stringified message', function () {
+    it('only counts markers at the start of the message', function () {
         log('[i] ok', true);
         semlog.message(['[E]'], true);
+        log('failed to read file[E] at x[W]', true);
+        log('  [E] indented marker', true);
         expect(semlog.getStatistics().error).to.equal(1);
-        expect(semlog.getStatistics().total).to.equal(2);
+        expect(semlog.getStatistics().warning).to.equal(0);
+        expect(semlog.getStatistics().total).to.equal(4);
     });
 
     it('colors by indicator and leaves unknown messages untouched', function () {
@@ -411,6 +414,21 @@ describe('semlog console output', function () {
         semlog.updateConfig({ printTime: true });
         log('[i] timed');
         expect(out[0]).to.match(/^\[\d\d:\d\d:\d\d\] \[i\] timed$/);
+    });
+
+    it('does not color or suppress messages that merely contain a marker', function () {
+        semlog.updateConfig({ printDebug: false });
+        log('array[D] access');
+        expect(out).to.deep.equal(['array[D] access']);
+    });
+
+    it('supports custom markers', function () {
+        semlog.addMarker('[OK]', 'green');
+        semlog.updateConfig({ colorize: true });
+        expect(semlog.colorize('[OK] fine')).to.include('[OK] fine');
+        expect(() => semlog.addMarker('OK', 'green')).to.throw(TypeError);
+        expect(() => semlog.addMarker('[X Y]', 'green')).to.throw(TypeError);
+        expect(() => semlog.addMarker('[OK]', 'nocolor')).to.throw(TypeError);
     });
 });
 

@@ -88,15 +88,16 @@ export function message(msg, silent) {
         }
     }
 
-    // Statistics are derived from the final string, so non-string values (e.g. arrays) cannot be misdetected
+    // Statistics are derived from the leading marker of the final string
     state.statistics.total += 1;
-    const isVerbose = msg.includes('[V]');
-    const isDebug = msg.includes('[D]');
+    const marker = getMarker(msg);
+    const isVerbose = marker === '[V]';
+    const isDebug = marker === '[D]';
     if (isVerbose || isDebug) {
         state.statistics.debug += 1;
-    } else if (msg.includes('[W]')) {
+    } else if (marker === '[W]') {
         state.statistics.warning += 1;
-    } else if (msg.includes('[E]')) {
+    } else if (marker === '[E]') {
         state.statistics.error += 1;
     }
 
@@ -253,8 +254,8 @@ export function addToHistory(obj) {
     }
 }
 
-/** Indicator strings and their colors, in order of precedence */
-const COLOR_MAP = [
+/** Indicator strings and their colors */
+const MARKER_COLORS = new Map([
     ['[E]', 'red'], // ERROR
     ['[W]', 'yellow'], // WARNING
     ['[?]', 'yellow'], // MISSING
@@ -270,11 +271,39 @@ const COLOR_MAP = [
     ['[D]', 'magenta'], // DEBUG
     ['[T]', 'magenta'], // TO-DO
     ['[TODO]', 'magenta'], // TO-DO
-];
+]);
+
+const MARKER_PATTERN = /^\s*(\[[^\]\s]+\])/;
 
 /**
- * Colors the messages by searching for specific indicator strings
- * TODO: Allow to add to the colorMap
+ * Returns the indicator string a message starts with (ignoring leading whitespace), e.g. `[E]`
+ *
+ * @param {string} msg
+ * @returns {string|undefined}
+ */
+function getMarker(msg) {
+    const match = MARKER_PATTERN.exec(msg);
+    return match ? match[1] : undefined;
+}
+
+/**
+ * Registers an indicator string with a color, or changes the color of an existing one
+ *
+ * @param {string} marker  Indicator in square brackets without whitespace, e.g. `[OK]`
+ * @param {string} color   Name of a chalk color or style, e.g. `green`
+ */
+export function addMarker(marker, color) {
+    if (typeof marker !== 'string' || !/^\[[^\]\s]+\]$/.test(marker)) {
+        throw new TypeError('Marker must be a string in square brackets without whitespace, e.g. "[OK]"');
+    }
+    if (typeof chalk[color] !== 'function') {
+        throw new TypeError('Unknown chalk color: ' + color);
+    }
+    MARKER_COLORS.set(marker, color);
+}
+
+/**
+ * Colors a message according to the indicator string it starts with, e.g. `[E]`
  *
  * @param {string} msg
  * @returns {string}
@@ -284,13 +313,9 @@ export function colorize(msg) {
         return msg;
     }
 
-    for (const [searchString, color] of COLOR_MAP) {
-        if (msg.includes(searchString)) {
-            return chalk[color](msg);
-        }
-    }
-
-    return msg;
+    const marker = getMarker(msg);
+    const color = marker && MARKER_COLORS.get(marker);
+    return color ? chalk[color](msg) : msg;
 }
 
 //////////////////////////////////////////
