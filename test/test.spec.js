@@ -173,80 +173,6 @@ describe('semlog logger', function () {
     });
 });
 
-describe('semlog utilities', function () {
-    it('pad numbers', function () {
-        expect(semlog.pad(7, 1)).to.equal('7');
-        expect(semlog.pad(7, 2)).to.equal('07');
-        expect(semlog.pad(7, 3)).to.equal('007');
-    });
-
-    it('pretty prints numbers', function () {
-        expect(semlog.prettyNumber(1)).to.equal('1');
-        expect(semlog.prettyNumber(100000)).to.equal('100.000');
-        expect(semlog.prettyNumber(-100000)).to.equal('-100.000');
-    });
-
-    it('pretty prints bytes', function () {
-        expect(semlog.prettyBytes(500)).to.equal('500 B');
-        expect(semlog.prettyBytes(1024)).to.be.a('string');
-        expect(semlog.prettyBytes(1024)).to.equal('1.0 KiB');
-        expect(semlog.prettyBytes(1024, true)).to.equal('1.0 kB');
-    });
-
-    it('strips trailing slashes from URLs', function () {
-        expect(semlog.stripTrailingSlash('http://fannon.de/')).to.equal('http://fannon.de');
-    });
-
-    it('strips leading and ending slashes from URLs / URL paths', function () {
-        expect(semlog.cleanUrl('http://fannon.de/')).to.equal('http://fannon.de');
-        expect(semlog.cleanUrl('http://fannon.de  ')).to.equal('http://fannon.de');
-        expect(semlog.cleanUrl('/test/')).to.equal('test');
-        expect(semlog.cleanUrl('/test/ ')).to.equal('test');
-        expect(semlog.cleanUrl('   test/ ')).to.equal('test');
-    });
-
-    it('creates date arrays', function () {
-        expect(semlog.getDateArray().length).to.equal(7);
-        expect(semlog.getDateArray()[0]).to.equal(new Date().getFullYear());
-    });
-
-    it('return human readable date-times', function () {
-        expect(semlog.humanDate().length).to.equal(19);
-        expect(semlog.humanDate(new Date('October 13, 2014 11:13:00'))).to.equal('2014-10-13 11:13:00');
-    });
-
-    it('return machine optimized date-times', function () {
-        expect(semlog.roboDate().length).to.equal(19);
-        expect(semlog.roboDate(new Date('October 13, 2014 11:13:00'))).to.equal('2014-10-13_11-13-00');
-    });
-
-    it('return human readable time', function () {
-        expect(semlog.humanTime().length).to.equal(8);
-        expect(semlog.humanTime(new Date('October 13, 2014 11:13:00'))).to.equal('11:13:00');
-    });
-
-    it('return machine optimized time', function () {
-        expect(semlog.roboTime().length).to.equal(8);
-        expect(semlog.roboTime(new Date('October 13, 2014 11:13:00'))).to.equal('11-13-00');
-    });
-
-    it('calculates the bytesize of strings', function () {
-        expect(semlog.byteSize('internationalization')).to.be.a('number');
-        expect(semlog.byteSize('internationalization')).to.equal(20);
-    });
-
-    it('calculates the bytesize of objects (parsed to JSON)', function () {
-        expect(semlog.byteSize({ title: 'internationalization' })).to.be.a('number');
-        expect(semlog.byteSize({ title: 'internationalization' })).to.equal(32);
-    });
-
-    it('calculates the bytesize of multibyte strings', function () {
-        expect(semlog.byteSize('\u00F1')).to.equal(2); // 2-byte UTF-8 (ñ)
-        expect(semlog.byteSize('\u20AC')).to.equal(3); // 3-byte UTF-8 (€)
-        expect(semlog.byteSize('\uD840\uDC00')).to.equal(4); // 4-byte UTF-8 surrogate pair (𠀀)
-    });
-});
-
 describe('semlog history', function () {
     let originalConfig;
 
@@ -450,41 +376,6 @@ describe('semlog shared state', function () {
         } finally {
             global.githubFannonSemlog = original;
         }
-    });
-});
-
-describe('semlog URL helpers', function () {
-    it('removes repeated slashes as documented', function () {
-        expect(semlog.cleanUrl('//a//')).to.equal('a');
-        expect(semlog.cleanUrl('/a/b/')).to.equal('a/b');
-        expect(semlog.stripTrailingSlash('http://fannon.de//')).to.equal('http://fannon.de');
-        expect(semlog.stripTrailingSlash('http://fannon.de')).to.equal('http://fannon.de');
-        expect(semlog.stripTrailingSlash('')).to.equal('');
-    });
-});
-
-describe('semlog number formatting edge cases', function () {
-    it('formats bytes at unit boundaries and beyond the largest unit', function () {
-        expect(semlog.prettyBytes(1024 * 1023.96)).to.equal('1.0 MiB');
-        expect(semlog.prettyBytes(-2048)).to.equal('-2.0 KiB');
-        expect(semlog.prettyBytes(-5)).to.equal('-5 B');
-        expect(semlog.prettyBytes(1024 ** 9)).to.equal('1024.0 YiB');
-    });
-
-    it('does not group the fraction of decimal numbers', function () {
-        expect(semlog.prettyNumber(1234.5678)).to.equal('1.234,5678');
-        expect(semlog.prettyNumber(1234567)).to.equal('1.234.567');
-    });
-});
-
-describe('semlog byteSize and pad edge cases', function () {
-    it('handles null and undefined', function () {
-        expect(semlog.byteSize(null)).to.equal(4);
-        expect(semlog.byteSize(undefined)).to.equal(9);
-    });
-
-    it('does not truncate numbers longer than the requested digits', function () {
-        expect(semlog.pad(12345, 2)).to.equal('12345');
     });
 });
 

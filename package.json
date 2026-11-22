@@ -25,7 +25,10 @@
   "license": "MIT",
   "type": "module",
   "main": "index.js",
-  "exports": "./index.js",
+  "exports": {
+    ".": "./index.js",
+    "./utils": "./utils.js"
+  },
   "engines": {
     "node": ">=22.12.0"
   },
@@ -59,9 +62,9 @@
     "brace-expansion": "^5.0.8"
   },
   "scripts": {
-    "lint": "eslint index.js test/",
-    "format": "prettier --write index.js test/",
-    "format:check": "prettier --check index.js test/",
+    "lint": "eslint index.js utils.js test/",
+    "format": "prettier --write index.js utils.js test/",
+    "format:check": "prettier --check index.js utils.js test/",
     "test": "mocha 'test/**/*.spec.js'",
     "test:coverage": "c8 mocha 'test/**/*.spec.js'"
   },
@@ -76,7 +79,8 @@
       "clover"
     ],
     "include": [
-      "index.js"
+      "index.js",
+      "utils.js"
     ]
   }
 }

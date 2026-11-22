@@ -12,6 +12,8 @@ This project adheres to [Semantic Versioning](https://semver.org/) and
 
 - `updateConfig()` throws a `TypeError` for unknown options and values of the wrong type instead of silently accepting them
 
+- The formatting helpers (`pad`, `prettyNumber`, `prettyBytes`, `byteSize`, `cleanUrl`, `stripTrailingSlash`, `getDateArray`, `humanDate`, `humanTime`, `roboDate`, `roboTime`) moved out of the logger and are no longer exported from `semlog`. Import them from `semlog/utils` instead
+
 ### Added
 - `addMarker(marker, color)` registers custom indicator strings
 

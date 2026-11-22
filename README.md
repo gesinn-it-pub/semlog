@@ -70,7 +70,11 @@ semlog.updateConfig({
 ```
 
 ### Helper Functions and more examples
-semlog has some built in helper functions like returning nicely formatted dates.
+semlog ships helper functions for formatting dates, numbers, bytes and URLs in a separate entry point:
+
+```javascript
+import { humanDate, prettyBytes } from 'semlog/utils';
+```
 
 For a complete API Doc, please view the [API docs](API.md).
 
