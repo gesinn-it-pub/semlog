@@ -6,8 +6,12 @@ This project adheres to [Semantic Versioning](https://semver.org/) and
 
 ## [Unreleased]
 
+### Breaking Changes
+- semlog is now an ES module (`"type": "module"`, named exports). `import { log } from 'semlog'` and `import * as semlog from 'semlog'` work; CommonJS `require('semlog')` keeps working on Node.js 22.12 or newer
+
 ### Changed
-- Raise minimum supported Node.js version to 22.12, required by the ESM-only test dependencies (`chai` 6, `mocha` 12)
+- Update `chalk` to v6, which is re-exported as `chalk`
+- Raise minimum supported Node.js version to 22.12, required by `chalk` 6 and the test dependencies (`chai` 6, `mocha` 12)
 
 ## [1.0.1] - 2026-11-17
 

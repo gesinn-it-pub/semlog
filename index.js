@@ -5,14 +5,12 @@
  * @author Simon Heimler
  */
 
-'use strict';
-
 //////////////////////////////////////////
 // Requirements                         //
 //////////////////////////////////////////
 
-const chalk = require('chalk');
-const prettyjson = require('prettyjson');
+import chalk from 'chalk';
+import prettyjson from 'prettyjson';
 
 //////////////////////////////////////////
 // Variables                            //
@@ -42,7 +40,7 @@ if (!global.githubFannonSemlog) {
 }
 
 /** Publicly export the chalk color library */
-exports.chalk = chalk;
+export { chalk };
 
 //////////////////////////////////////////
 // LOGGING FUNCTIONS                    //
@@ -56,17 +54,17 @@ exports.chalk = chalk;
  * @param {string|object}   msg     Message String or Object
  * @param {boolean}         [silent]  Dot not print message to the console, but stores it to the log history.
  */
-exports.log = function (obj, silent) {
+export function log(obj, silent) {
     if (obj && obj instanceof Error) {
-        exports.error(obj, silent);
+        error(obj, silent);
     } else if (obj && typeof obj === 'object') {
-        exports.debug(obj, silent);
+        debug(obj, silent);
     } else {
-        exports.message(obj, silent);
+        message(obj, silent);
     }
-};
+}
 
-exports.message = function (msg, silent) {
+export function message(msg, silent) {
     global.githubFannonSemlog.statistics.total += 1;
     if (msg && msg.indexOf && (msg.indexOf('[V]') >= 0 || msg.indexOf('[D]') >= 0)) {
         global.githubFannonSemlog.statistics.debug += 1;
@@ -87,18 +85,18 @@ exports.message = function (msg, silent) {
         }
     }
 
-    exports.addToHistory(msg);
+    addToHistory(msg);
 
     if (!silent) {
         if (config.colorize) {
-            msg = exports.colorize(msg);
+            msg = colorize(msg);
         }
 
         if ((config.printTime || config.printDateTime) && msg.trim().length > 0) {
             if (config.printDateTime) {
-                msg = chalk.gray('[' + exports.humanDate() + '] ') + msg;
+                msg = chalk.gray('[' + humanDate() + '] ') + msg;
             } else {
-                msg = chalk.gray('[' + exports.humanTime() + '] ') + msg;
+                msg = chalk.gray('[' + humanTime() + '] ') + msg;
             }
         }
 
@@ -108,19 +106,19 @@ exports.message = function (msg, silent) {
             console.log(msg);
         }
     }
-};
+}
 
 /**
  * Prints out debugging information for the current model object
  *
  * @param {object}        obj     Object
  */
-exports.debug = function (obj, silent) {
+export function debug(obj, silent) {
     global.githubFannonSemlog.statistics.total += 1;
 
     const config = global.githubFannonSemlog.config;
     silent = silent || config.silent;
-    exports.addToHistory(obj);
+    addToHistory(obj);
 
     if (!silent) {
         if (global.githubFannonSemlog.config.printYaml) {
@@ -142,20 +140,20 @@ exports.debug = function (obj, silent) {
             console.log(chalk.gray(msg));
         }
     }
-};
+}
 
 /**
  * Prints errors
  *
  * @param {object}        obj     Object
  */
-exports.error = function (obj, silent) {
+export function error(obj, silent) {
     global.githubFannonSemlog.statistics.total += 1;
     global.githubFannonSemlog.statistics.error += 1;
 
     const config = global.githubFannonSemlog.config;
     silent = silent || config.silent;
-    exports.addToHistory(obj);
+    addToHistory(obj);
 
     if (!silent) {
         console.error(chalk.red('[E] ' + obj.message));
@@ -164,9 +162,9 @@ exports.error = function (obj, silent) {
             console.log(chalk.gray(obj.stack));
         }
     }
-};
+}
 
-exports.addToHistory = function (obj) {
+export function addToHistory(obj) {
     const config = global.githubFannonSemlog.config;
     let msg;
 
@@ -179,14 +177,14 @@ exports.addToHistory = function (obj) {
         }
 
         if (config.logDateTime) {
-            msg = '[' + exports.humanDate() + '] ' + msg;
+            msg = '[' + humanDate() + '] ' + msg;
         }
     } catch {
         msg = '[W] Internal semlog error: Could not push circular/invalid object into the history';
     }
 
     global.githubFannonSemlog.history.push(msg);
-};
+}
 
 /**
  * Colors the messages by searching for specific indicator strings
@@ -195,7 +193,7 @@ exports.addToHistory = function (obj) {
  * @param {string} msg
  * @returns {string}
  */
-exports.colorize = function (msg) {
+export function colorize(msg) {
     const colorMap = {
         '[E]': 'red', // ERROR
         '[W]': 'yellow', // WARNING
@@ -221,7 +219,7 @@ exports.colorize = function (msg) {
     }
 
     return msg;
-};
+}
 
 //////////////////////////////////////////
 // LOGGER FUNCTIONS                     //
@@ -230,16 +228,16 @@ exports.colorize = function (msg) {
 /**
  * Gets the current config
  */
-exports.getConfig = function () {
+export function getConfig() {
     return global.githubFannonSemlog.config;
-};
+}
 
 /**
  * Gets the current config
  */
-exports.getStatistics = function () {
+export function getStatistics() {
     return global.githubFannonSemlog.statistics;
-};
+}
 
 /**
  * Updates the config.
@@ -247,15 +245,15 @@ exports.getStatistics = function () {
  *
  * @param {object} config
  */
-exports.updateConfig = function (config) {
+export function updateConfig(config) {
     Object.assign(global.githubFannonSemlog.config, config);
     return global.githubFannonSemlog.config;
-};
+}
 
 /**
  * Clears (empties) the log object
  */
-exports.clearLogHistory = function () {
+export function clearLogHistory() {
     global.githubFannonSemlog.history = [];
     global.githubFannonSemlog.statistics = {
         debug: 0,
@@ -263,16 +261,16 @@ exports.clearLogHistory = function () {
         error: 0,
         total: 0,
     };
-};
+}
 
 /**
  * Returns the global.moboLogObject
  *
  * @returns {Array}
  */
-exports.getLogHistory = function () {
+export function getLogHistory() {
     return global.githubFannonSemlog.history;
-};
+}
 
 //////////////////////////////////////////
 // HELPER UTILITIES                     //
@@ -285,9 +283,9 @@ exports.getLogHistory = function () {
  * @param {number} digits   number of total digits
  * @returns {string}
  */
-exports.pad = function (number, digits) {
+export function pad(number, digits) {
     return new Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
-};
+}
 
 /**
  * Adds dots as thousand separators to numbers
@@ -297,9 +295,9 @@ exports.pad = function (number, digits) {
  * @param number
  * @returns {string}
  */
-exports.prettyNumber = function (number) {
+export function prettyNumber(number) {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-};
+}
 
 /**
  * Replace all (/.../g) leading slash (^\/) or (|) trailing slash (\/$) with an empty string.
@@ -310,10 +308,10 @@ exports.prettyNumber = function (number) {
 
  * @returns {String}
  */
-exports.cleanUrl = function (url) {
+export function cleanUrl(url) {
     url = url.trim();
     return url.replace(/^\/|\/$/g, '');
-};
+}
 
 /**
  * Strips trailing slashes from URL
@@ -323,19 +321,19 @@ exports.cleanUrl = function (url) {
  * @param {String} url URL to cleanup
  * @returns {String}
  */
-exports.stripTrailingSlash = function (url) {
+export function stripTrailingSlash(url) {
     if (url.substr(-1) === '/') {
         url = url.substr(0, url.length - 1);
     }
     return url;
-};
+}
 
 /**
  * Returns the byte length of an utf8 string or an object (when parsed to JSON)
  *
  * @see http://stackoverflow.com/a/23329386
  */
-exports.byteSize = function (obj) {
+export function byteSize(obj) {
     let str;
 
     if (typeof obj === 'object') {
@@ -357,7 +355,7 @@ exports.byteSize = function (obj) {
         } //trail surrogate
     }
     return s;
-};
+}
 
 /**
  *
@@ -367,7 +365,7 @@ exports.byteSize = function (obj) {
  *
  * @see http://stackoverflow.com/a/14919494
  */
-exports.prettyBytes = function (bytes, si) {
+export function prettyBytes(bytes, si) {
     const thresh = si ? 1000 : 1024;
     if (bytes < thresh) {
         return bytes + ' B';
@@ -381,7 +379,7 @@ exports.prettyBytes = function (bytes, si) {
         ++u;
     } while (bytes >= thresh);
     return bytes.toFixed(1) + ' ' + units[u];
-};
+}
 
 /**
  * Returns an array with date / time information
@@ -390,18 +388,18 @@ exports.prettyBytes = function (bytes, si) {
  * @param {Date=} date   Optional date object. If falsy, will take current time.
  * @returns {Array}
  */
-exports.getDateArray = function (date) {
+export function getDateArray(date) {
     date = date || new Date();
     return [
         date.getFullYear(),
-        exports.pad(date.getMonth() + 1, 2),
-        exports.pad(date.getDate(), 2),
-        exports.pad(date.getHours(), 2),
-        exports.pad(date.getMinutes(), 2),
-        exports.pad(date.getSeconds(), 2),
-        exports.pad(date.getMilliseconds(), 3),
+        pad(date.getMonth() + 1, 2),
+        pad(date.getDate(), 2),
+        pad(date.getHours(), 2),
+        pad(date.getMinutes(), 2),
+        pad(date.getSeconds(), 2),
+        pad(date.getMilliseconds(), 3),
     ];
-};
+}
 
 /**
  * Returns nicely formatted date-time
@@ -410,11 +408,11 @@ exports.getDateArray = function (date) {
  * @param {object} [date]
  * @returns {string}
  */
-exports.humanDate = function (date) {
+export function humanDate(date) {
     date = date || new Date();
-    const d = exports.getDateArray(date);
+    const d = getDateArray(date);
     return d[0] + '-' + d[1] + '-' + d[2] + ' ' + d[3] + ':' + d[4] + ':' + d[5];
-};
+}
 
 /**
  * Returns a formatted date-time, optimized for machines
@@ -423,11 +421,11 @@ exports.humanDate = function (date) {
  * @param {object} [date]
  * @returns {string}
  */
-exports.roboDate = function (date) {
+export function roboDate(date) {
     date = date || new Date();
-    const d = exports.getDateArray(date);
+    const d = getDateArray(date);
     return d[0] + '-' + d[1] + '-' + d[2] + '_' + d[3] + '-' + d[4] + '-' + d[5];
-};
+}
 
 /**
  * Returns nicely formatted date-time
@@ -436,11 +434,11 @@ exports.roboDate = function (date) {
  * @param {object} [date]
  * @returns {string}
  */
-exports.humanTime = function (date) {
+export function humanTime(date) {
     date = date || new Date();
-    const d = exports.getDateArray(date);
+    const d = getDateArray(date);
     return d[3] + ':' + d[4] + ':' + d[5];
-};
+}
 
 /**
  * Returns a formatted date-time, optimized for machines
@@ -449,8 +447,8 @@ exports.humanTime = function (date) {
  * @param {object} [date]
  * @returns {string}
  */
-exports.roboTime = function (date) {
+export function roboTime(date) {
     date = date || new Date();
-    const d = exports.getDateArray(date);
+    const d = getDateArray(date);
     return d[3] + '-' + d[4] + '-' + d[5];
-};
+}

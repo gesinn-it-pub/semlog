@@ -1,8 +1,6 @@
-'use strict';
-
-const semlog = require('../');
+import * as semlog from '../index.js';
+import { expect } from 'chai';
 const log = semlog.log;
-const expect = require('chai').expect;
 
 describe('semlog logger', function () {
     it('logs a string message to the console', function () {

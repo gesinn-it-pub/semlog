@@ -20,9 +20,14 @@ $ npm install --save semlog
 
 ### Import 
 ```javascript
-const semlog = require('semlog');
+import * as semlog from 'semlog';
 const log = semlog.log; // Optional shortcut for logging
+
+// or use named imports
+import { log, chalk } from 'semlog';
 ```
+
+semlog is an ES module. CommonJS code on Node.js 22.12 or newer can still load it with `require('semlog')`.
 
 ### Logging
 ```javascript
