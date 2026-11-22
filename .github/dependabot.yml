@@ -4,10 +4,6 @@ updates:
     directory: /
     schedule:
       interval: daily
-    ignore:
-      # chalk 5+ is ESM-only; this library is CommonJS and exports chalk publicly
-      - dependency-name: chalk
-        update-types: ["version-update:semver-major"]
   - package-ecosystem: github-actions
     directory: /
     schedule:
